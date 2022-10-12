@@ -18,12 +18,6 @@ jobs:
       - run: git fetch origin "$BASE_COMMIT_SHA"
       - name: Install dependencies 
         run: yarn install --frozen-lockfile --check-files
-      - name: Format code
-        run: yarn format
-      - name: Type check
-        run: yarn typecheck
-      - name: Lint
-        run: yarn eslint
-      - name: Test
-        run: yarn test
+      - name: Build
+        run: yarn build
     
