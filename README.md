@@ -43,4 +43,4 @@ TODO:
 
 Well `tested`, written in `typescript`.
 
-Library was created during one rainy weekend. So if somebody can look at the code and give some feedback (positive or negative), I will appreciate it 🤗
+Library was created during rainy weekend. So if somebody can look at the code and give some feedback (positive or negative), I will appreciate it 🤗
