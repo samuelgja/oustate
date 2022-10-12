@@ -1,0 +1,11 @@
+node_modules
+
+yarn.lock
+
+docs
+
+.parcel-cache
+dist
+lib
+example
+lib/

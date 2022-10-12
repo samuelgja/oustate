@@ -1,0 +1,6 @@
+module.exports = {
+  extends: '@parcel/config-default',
+  compressors: {
+    '*.{html,css,js,svg,map}': ['@parcel/compressor-gzip'],
+  },
+}
