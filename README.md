@@ -4,6 +4,8 @@
 
 Another small, fast but robust ☝️ **React state management library** with aim 🎯 on simplicity and scalability in real world scenarios.
 
+Still experimental / beta. **Do not use it in productions yet!** 👻
+
 Based on React [hooks](https://reactjs.org/docs/hooks-reference.html) api. Inspired by [recoil](https://recoiljs.org/) and [zustand](https://github.com/pmndrs/zustand/blob/main/readme.md) while try to achieve the best from these two worlds.
 
 Solving problems like the dreaded [zombie child problem](https://react-redux.js.org/api/hooks#stale-props-and-zombie-children), [react concurrency](https://reactjs.org/blog/2022/03/29/react-v18.html) and [context loss](https://github.com/facebook/react/issues/13332) between mixed renderers with focus on **re-renders reduction**.
@@ -29,7 +31,7 @@ _Note: State need to be used in **global js context** (🤫 it can be used also 
 
 #### Calling the state in React
 
-After state is created you can easily use it `useStateValue` hook.
+After state is created you can easily use it in `useStateValue` hook.
 
 Keep in mind that using selector functions in `useStateValue` hook don't need to be memoized!
 [Selectors no longer need to be memoized](https://github.com/reactwg/react-18/discussions/86)
