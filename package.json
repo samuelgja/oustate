@@ -6,7 +6,7 @@
     "code-check": "yarn format && yarn typecheck && yarn lint",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "format": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\"",
+    "format": "prettier \"./**/*.{js,jsx,json,ts,tsx}\"",
     "test": "jest __tests__/*.test.* --env=jsdom --verbose --runInBand"
   },
   "dependencies": {
