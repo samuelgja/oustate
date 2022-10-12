@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '14'
           cache: yarn
-      - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - run: git fetch origin "$BASE_COMMIT_SHA"
       - name: Install dependencies 
         run: yarn install --frozen-lockfile --check-files
       - name: Format code
