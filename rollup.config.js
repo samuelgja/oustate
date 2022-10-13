@@ -52,7 +52,7 @@ export default function (arguments_) {
         },
       }),
       typescript({ outDir, declaration: isTypes }),
-      terser(),
+      terser({ compress: { passes: 2, dead_code: false } }),
     ],
     external: ['react', 'react-dom'],
   }

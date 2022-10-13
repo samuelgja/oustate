@@ -9,7 +9,6 @@ import {
   SubscribeParameters,
   SubscribeParametersType,
   ComputedState,
-  StateOutputKeys,
   AtomState,
 } from '../types'
 import { getId, isPromise, toType } from '../utils/common'
@@ -149,18 +148,18 @@ export const createComputed = <T>(
 
   const get: GetState = <T extends AtomState<any> | ComputedState<any>, S>(
     state: T,
-    selectorFunction?: (value: T[StateOutputKeys.TYPE]) => S,
+    selectorFunction?: (value: T['__tag']) => S,
     isSame?: IsSame<S>,
   ): any => {
     const { is } = state
-    const selector = selectorFunction ? selectorFunction : (value: T[StateOutputKeys.TYPE]) => value
+    const selector = selectorFunction ? selectorFunction : (value: T['__tag']) => value
 
     data.isResolvingStateId = state.id
     switch (is) {
       case StateKeys.IS_COMPUTED: {
         computedSubscribe({
-          stateId: state[StateOutputKeys.ID],
-          subscribe: state[StateOutputKeys.INTERNAL][StateOutputKeys.SUBSCRIBE_INTERNAL],
+          stateId: state.id,
+          subscribe: state.__internal.__sub,
           data,
           emitterInternal,
           getData,
@@ -173,7 +172,7 @@ export const createComputed = <T>(
           stopLoading,
         })
 
-        const snapshot = state[StateOutputKeys.INTERNAL][StateOutputKeys.GET_SNAPSHOT]()
+        const snapshot = state.__internal.getSnapshot()
 
         switch (snapshot.status) {
           case PromiseStatus.PENDING: {
@@ -191,8 +190,8 @@ export const createComputed = <T>(
       case StateKeys.IS_STATE_FAMILY:
       case StateKeys.IS_STATE: {
         computedSubscribe({
-          stateId: state[StateOutputKeys.ID],
-          subscribe: state[StateOutputKeys.INTERNAL][StateOutputKeys.SUBSCRIBE_INTERNAL],
+          stateId: state.id,
+          subscribe: state.__internal.__sub,
           data,
           emitterInternal,
           getData,
@@ -205,7 +204,7 @@ export const createComputed = <T>(
           stopLoading,
         })
 
-        const snapshot = state[StateOutputKeys.INTERNAL][StateOutputKeys.GET_SNAPSHOT]()
+        const snapshot = state.__internal.getSnapshot()
 
         switch (snapshot.status) {
           case PromiseStatus.PENDING: {
@@ -441,17 +440,17 @@ export const createComputed = <T>(
   }
 
   return {
-    [StateOutputKeys.TYPE]: undefined as AwaitedState,
-    [StateOutputKeys.ID]: id,
-    [StateOutputKeys.IS]: StateKeys.IS_COMPUTED,
-    [StateOutputKeys.GET]: getPromiseData,
-    [StateOutputKeys.SUBSCRIBE]: subscribeEmitter.subscribe,
-    [StateOutputKeys.INTERNAL]: {
-      [StateOutputKeys.GET_SNAPSHOT]: getInternalSnapshot,
-      [StateOutputKeys.EMITTER]: emitter,
-      [StateOutputKeys.CACHE_EMITTER]: cacheEmitter,
-      [StateOutputKeys.SUBSCRIBE_INTERNAL]: emitterInternal.subscribe,
-      [StateOutputKeys.PROMISE_EMITTER]: promiseEmitter,
+    __tag: undefined as AwaitedState,
+    id: id,
+    is: StateKeys.IS_COMPUTED,
+    getState: getPromiseData,
+    subscribe: subscribeEmitter.subscribe,
+    __internal: {
+      getSnapshot: getInternalSnapshot,
+      __emitter: emitter,
+      __cacheEmitter: cacheEmitter,
+      __sub: emitterInternal.subscribe,
+      __promiseEmitter: promiseEmitter,
     },
   }
 }

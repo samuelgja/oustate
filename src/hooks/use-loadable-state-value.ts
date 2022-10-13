@@ -1,5 +1,5 @@
 import { PromiseStatus } from '../computed/computed-types'
-import { IsSame, StateAll, StateOutputKeys } from '../types'
+import { IsSame, StateAll } from '../types'
 import { syncExternalStore, toType } from '../utils/common'
 
 export interface StateLoadable<T, S> {
@@ -13,10 +13,10 @@ export const useLoadableStateValue = <T, S>(
   selector: (stateValue: T) => S = (stateValue) => toType<S>(stateValue),
   isEqual?: IsSame<S>,
 ): StateLoadable<T, S> => {
-  const promiseData = syncExternalStore(state[StateOutputKeys.INTERNAL][StateOutputKeys.PROMISE_EMITTER], (s) => s)
+  const promiseData = syncExternalStore(state.__internal.__promiseEmitter, (s) => s)
 
   const data = syncExternalStore(
-    state[StateOutputKeys.INTERNAL][StateOutputKeys.EMITTER],
+    state.__internal.__emitter,
     (stateValue) => {
       if (promiseData.status === PromiseStatus.PENDING) {
         return toType<S>(stateValue)

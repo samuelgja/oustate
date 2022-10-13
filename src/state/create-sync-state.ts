@@ -1,5 +1,5 @@
 import { PromiseStatus } from '../computed/computed-types'
-import { AtomState, IsSame, StateInternal, StateOutputKeys } from '../types'
+import { AtomState, IsSame, StateInternal } from '../types'
 import { createState } from './create-state'
 
 export const createSyncState = <T>(options: {
@@ -26,7 +26,7 @@ export const createSyncState = <T>(options: {
     },
   })
 
-  const setPromiseStatus = state[StateOutputKeys.INTERNAL][StateOutputKeys.PROMISE_SETTER]
+  const setPromiseStatus = state.__internal.__promiseSetter
   setPromiseStatus(PromiseStatus.PENDING)
   onSnapshot?.(async (snapshot) => {
     const oldState = state.getState()
@@ -35,7 +35,7 @@ export const createSyncState = <T>(options: {
     }
     state.setState(snapshot)
     if (resolveOnLoad !== null) {
-      state[StateOutputKeys.INTERNAL].resolvePromises(snapshot)
+      state.__internal.resolvePromises(snapshot)
       setPromiseStatus(PromiseStatus.SUCCESS)
       resolveOnLoad(null)
       resolveOnLoad = null

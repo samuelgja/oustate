@@ -11,7 +11,6 @@ import {
   SubscribeParameters,
   SubscribeParametersType,
   AtomState,
-  StateOutputKeys,
   StateDataInternal,
 } from '../types'
 import { getId } from '../utils/common'
@@ -132,22 +131,21 @@ export const createState = <T>(
   }
 
   return {
-    [StateOutputKeys.TYPE]: undefined as State,
-    [StateOutputKeys.ID]: id,
-    [StateOutputKeys.IS]: StateKeys.IS_STATE,
-    [StateOutputKeys.GET]: getState,
-    [StateOutputKeys.SET]: setState,
-    [StateOutputKeys.CLEAR]: () => setState(defaultState),
-    [StateOutputKeys.SUBSCRIBE]: subscribeEmitter.subscribe,
-    [StateOutputKeys.INTERNAL]: {
-      [StateOutputKeys.GET_SNAPSHOT]: getInternalSnapshot,
-      [StateOutputKeys.SUBSCRIBE_INTERNAL]: emitterInternal.subscribe,
+    __tag: undefined as State,
+    id: id,
+    is: StateKeys.IS_STATE,
+    getState: getState,
+    setState: setState,
+    clear: () => setState(defaultState),
+    subscribe: subscribeEmitter.subscribe,
+    __internal: {
+      getSnapshot: getInternalSnapshot,
+      __sub: emitterInternal.subscribe,
       resolvePromises: resolvePromises,
-      [StateOutputKeys.SUBSCRIBE_INTERNAL]: emitterInternal.subscribe,
-      [StateOutputKeys.EMITTER]: emitter,
-      [StateOutputKeys.CACHE_EMITTER]: emitter,
-      [StateOutputKeys.PROMISE_EMITTER]: promiseEmitter,
-      [StateOutputKeys.PROMISE_SETTER]: setStatusData,
+      __emitter: emitter,
+      __cacheEmitter: emitter,
+      __promiseEmitter: promiseEmitter,
+      __promiseSetter: setStatusData,
     },
   }
 }

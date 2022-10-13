@@ -1,10 +1,10 @@
-import { SubscribeInternalParameters, IsSame, StateOutputKeys, StateAll } from '../types'
+import { SubscribeInternalParameters, IsSame, StateAll } from '../types'
 
 export type GetState = <T extends StateAll<any>, S>(
   state: T,
-  selector?: (value: T[StateOutputKeys.TYPE]) => S,
+  selector?: (value: T['__tag']) => S,
   isSame?: IsSame<S>,
-) => undefined extends S ? Awaited<T[StateOutputKeys.TYPE]> : S
+) => undefined extends S ? Awaited<T['__tag']> : S
 
 export enum PromiseStatus {
   PENDING = 'pending',
