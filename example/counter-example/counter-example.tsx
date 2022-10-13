@@ -1,3 +1,4 @@
+import React from 'react'
 import { createState, useStateValue } from '../../lib'
 
 const counterState = createState(0)
