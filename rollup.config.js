@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/prevent-abbreviations */
-import resolve from '@rollup/plugin-node-resolve'
+import nodeResolver from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import { terser } from 'rollup-plugin-terser'
@@ -7,6 +7,9 @@ import replace from '@rollup/plugin-replace'
 import path from 'path'
 
 const outFolder = 'lib'
+function external(id) {
+  return !id.startsWith('.') && !id.startsWith(root)
+}
 
 export default function (arguments_) {
   const outDir = path.resolve(outFolder, arguments_.format)
@@ -36,16 +39,31 @@ export default function (arguments_) {
         preserveModulesRoot: 'src',
         dir: outDir,
       }
+
+  let replacer
+  let resolver
+  if (format === 'umd') {
+    output.name = 'index'
+    output.globals = {
+      react: 'React',
+      // 'use-sync-external-store/shim/with-selector': 'useSyncExternalStoreShimWithSelector',
+    }
+
+    resolver = nodeResolver()
+  } else {
+    replacer = replace({
+      __DEV__: '(import.meta.env&&import.meta.env.MODE)!=="production"',
+      'use-sync-external-store': 'use-sync-external-store',
+      preventAssignment: true,
+    })
+  }
   return {
     input: ['./src/index.ts'],
     output,
+    external,
     plugins: [
-      replace({
-        __DEV__: '(import.meta.env&&import.meta.env.MODE)!=="production"',
-        'use-sync-external-store/shim/with-selector': 'use-sync-external-store/shim/with-selector.js',
-        preventAssignment: true,
-      }),
-      resolve(),
+      replacer,
+      resolver,
       commonjs({
         namedExports: {
           'use-sync-external-store/shim/with-selector': ['useSyncExternalStoreWithSelector'],
