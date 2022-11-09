@@ -26,7 +26,7 @@ const Counter1Component = () => {
   const counter1 = useStateValue(countersState, (user) => user.counter1)
 
   reRenders.current++
-  console.log('re-render')
+
   return (
     <>
       <p>re-renders count: {reRenders.current}</p>
