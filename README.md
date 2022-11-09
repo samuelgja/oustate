@@ -16,6 +16,53 @@ Solving problems like the dreaded [zombie child problem](https://react-redux.js.
 yarn add oustate  # or npm i oustate
 ```
 
+#### Quick Start
+
+Simple state example
+
+```typescript
+import { createState } from 'oustate'
+
+const userState = createState({ username: 'John', age: 30 })
+
+const App = () => {
+  const user = useStateValue(userState) // return all the user object
+  return (
+    <div
+      onClick={() =>
+        userState.setState((user) => {
+          user.age++
+          return { ...user }
+        })
+      }>
+      {user.age}
+    </div>
+  )
+}
+```
+
+Simple state example with care about re-renders
+
+```typescript
+import { createState } from 'oustate'
+
+const userState = createState({ username: 'John', age: 30 })
+
+const App = () => {
+  const userAge = useStateValue(userState, uset => user.age) // return only user.age, so this component re-render only if user.age is changed.
+    <div
+      onClick={() =>
+        userState.setState((user) => {
+          user.age++
+          return { ...user }
+        })
+      }>
+      {userAge}
+    </div>
+  )
+}
+```
+
 #### API
 
 ##### `createState`
