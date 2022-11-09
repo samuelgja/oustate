@@ -1,7 +1,7 @@
 ### Oustate
 
 [![Build](https://github.com/samuelgjabel/oustate/actions/workflows/build.yml/badge.svg)](https://github.com/samuelgjabel/oustate/actions/workflows/build.yml) [![Code quality check](https://github.com/samuelgjabel/oustate/actions/workflows/code-check.yml/badge.svg)](https://github.com/samuelgjabel/oustate/actions/workflows/code-check.yml)
-[![Build Size](https://img.shields.io/bundlephobia/minzip/oustate?label=Bundle%size%20size&style=flat&colorA=black&colorB=cyan)](https://bundlephobia.com/result?p=oustate)
+[![Build Size](https://img.shields.io/bundlephobia/minzip/oustate?label=Bundle%size%20size&style=flat&colorA=black&colorB=green)](https://bundlephobia.com/result?p=oustate)
 
 Another small, fast but robust ☝️ **React state management library** with aim 🎯 on simplicity and scalability in real world scenarios.
 
