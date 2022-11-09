@@ -97,7 +97,7 @@ await counterPlusUserAgeState.getState()
 const counterPlusUser = useStateValue(counterPlusUserAgeState)
 ```
 
-_Note: Keep in mind when using **useStateValue** and **async computed state**, component need to be wrapped into the [Suspense](https://reactjs.org/docs/react-api.html#reactsuspense)!_
+_Note: Keep in mind when using **useStateValue** and **async computed state**, component need to be wrapped into the [Suspense](https://reactjs.org/docs/react-api.html#reactsuspense)! For more control over `computed` loading states use `useLoadableState` instead `useStateValue`_
 
 ##### `createComputedFamily`
 
