@@ -49,7 +49,7 @@ import { createState } from 'oustate'
 const userState = createState({ username: 'John', age: 30 })
 
 const App = () => {
-  const userAge = useStateValue(userState, uset => user.age) // return only user.age, so this component re-render only if user.age is changed.
+  const userAge = useStateValue(userState, user => user.age) // return only user.age, so this component re-render only if user.age is changed.
     <div
       onClick={() =>
         userState.setState((user) => {
@@ -68,6 +68,18 @@ const App = () => {
 ##### `createState`
 
 creating basic atom state - it can be almost any value - object / atom / ...
+
+**parameters:**
+
+1. defaultState -> any
+2. options ->
+
+- isSame `typescript type IsSame<T = unknown> = (a: T, b: T) => boolean `
+- onSet `typescript onSet?: (oldValue: T, setStateCallback: () => T) => T`
+
+**returns:**
+`AtomState` type
+**Example:**
 
 ```typescript
 import { createState } from 'oustate'
@@ -92,11 +104,11 @@ state.setState(3)
 const stateValue = useStateValue(state)
 ```
 
-returns `AtomState` type
-
 ##### `createStateFamily`
 
 same as `createState` but instead of returning `AtomState`, it **returns function** where first parameter (key) is unique state identifier and returns `AtomState`
+
+**Example:**
 
 ```typescript
 import { createStateFamily } from 'oustate'
@@ -127,6 +139,8 @@ const stateValue = useStateValue(state('some-key'))
 computed state is a state that depends on other states or other computed states. It is recomputed when the states it depends on change.
 **It can be also async**
 
+**Example:**
+
 ```typescript
 import { createState, createComputed } from 'oustate'
 
@@ -147,6 +161,8 @@ _Note: Keep in mind when using **useStateValue** and **async computed state**, c
 ##### `createComputedFamily`
 
 same as `createComputed`, but instead of returning `ComputedState`, it **returns function** where first parameter (key) is unique state identifier and returns `ComputedState`
+
+**Example:**
 
 ```typescript
 import { createState, createComputed } from 'oustate'
@@ -169,6 +185,8 @@ it's just helper function - slice wrapped around `createComputed`.
 There are scenarios when need to slice 1 state in same way in multiple components (`typescript const userAge = useStateValue(userState, user => user.age) `),
 instead of writing same logic multiple times in react scope,
 `createSlice` helps to bring it to the global scope (`typescript const userAgeState = createSlice(userState, user => user.age) `).
+
+**Example:**
 
 ```typescript
 import { createState, createSlice } from 'oustate'
