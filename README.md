@@ -216,10 +216,6 @@ Keep in mind that using selector functions in all hooks **don't need to be memoi
 
 **👋 Welcome back inline functions 👋**
 
-TODO:
-
-1. add `SSR` implementation
-
 Well `tested`, written in `typescript`.
 
-Library was created during one rainy weekend. So if somebody can look at the code and give some feedback (positive or negative), I will appreciate it 🤗
+This library is just playing around with possible solutions how to create react states, so if you can look at the code & give some feedback - positive or negative, I will appreciate it! 🤗
