@@ -21,7 +21,7 @@ yarn add oustate  # or npm i oustate
 Simple state example
 
 ```typescript
-import { createState } from 'oustate'
+import { createState, useStateValue } from 'oustate'
 
 const userState = createState({ username: 'John', age: 30 })
 
@@ -44,7 +44,7 @@ const App = () => {
 Simple state example with care about re-renders
 
 ```typescript
-import { createState } from 'oustate'
+import { createState, useStateValue } from 'oustate'
 
 const userState = createState({ username: 'John', age: 30 })
 
