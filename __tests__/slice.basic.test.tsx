@@ -1,4 +1,4 @@
-import { createState, createSlice, useStateValue, ComputedState } from '../src'
+import { createState, createSlice, useStateValue, ComputedState } from '../packages/core'
 import { act } from '@testing-library/react-hooks'
 import { renderHookWithCount } from './utils'
 

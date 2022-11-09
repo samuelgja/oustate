@@ -1,5 +1,5 @@
 import { act } from 'react-test-renderer'
-import { createComputed, createSlice, createState, useStateValue } from '../src'
+import { createComputed, createSlice, createState, useStateValue } from '../packages/core'
 import { renderHookWithCount } from './utils'
 const awaiter = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 describe('UseStateValue tests', () => {

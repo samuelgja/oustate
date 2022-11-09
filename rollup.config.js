@@ -29,14 +29,14 @@ export default function (arguments_) {
     ? {
         format,
         preserveModules: false,
-        preserveModulesRoot: 'src',
+        preserveModulesRoot: 'packages/core',
         name: 'index',
         file: path.resolve(outDir, 'index.js'),
       }
     : {
         format,
         preserveModules: true,
-        preserveModulesRoot: 'src',
+        preserveModulesRoot: 'packages/core',
         dir: outDir,
       }
 
@@ -58,7 +58,7 @@ export default function (arguments_) {
     })
   }
   return {
-    input: ['./src/index.ts'],
+    input: ['./packages/core/index.ts'],
     output,
     external,
     plugins: [
