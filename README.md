@@ -69,16 +69,6 @@ const App = () => {
 
 creating basic atom state - it can be almost any value - object / atom / ...
 
-**parameters:**
-
-1. defaultState -> any
-2. options ->
-
-- isSame `typescript type IsSame<T = unknown> = (a: T, b: T) => boolean `
-- onSet `typescript onSet?: (oldValue: T, setStateCallback: () => T) => T`
-
-**returns:**
-`AtomState` type \n
 **Example:**
 
 ```typescript
