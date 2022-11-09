@@ -197,7 +197,19 @@ _Note: State need to be used in **global js context** (🤫 it can be used also 
 
 #### Calling the state in React
 
-After state is created you can easily use it in `useStateValue` hook.
+After state is created you can easily use it with `useStateValue`, `useLoadableStateValue` or `useCachedStateValue` hooks.
+
+##### `useStateValue`
+
+hook for getting state value - when async computed is used - need wrap component into the suspense.
+
+##### `useLoadableStateValue`
+
+hook for getting state value but with more control over loading state - component don't need to be wrapped into the suspense
+
+##### `useCachedStateValue`
+
+hook for getting state with caching control - it's useful for async computed states - when on first load it went to the suspense, but on second change it will returns loading state + old state
 
 Keep in mind that using selector functions in `useStateValue` hook don't need to be memoized!
 [Selectors no longer need to be memoized](https://github.com/reactwg/react-18/discussions/86)
