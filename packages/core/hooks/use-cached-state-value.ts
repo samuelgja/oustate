@@ -7,6 +7,15 @@ export interface CachedState<T, S> {
   isLoading: boolean
 }
 
+/**
+ * useCachedStateValue Hook.
+ * On first load it triggers suspense but after second load it will return cached value & loading status.
+ *
+ * @param state - state value
+ * @param selector - selector function (useStateValue(state, (state) => state.value)) - it return only selected value, selector don't need to be memoized.
+ * @param isEqual - equality check function for selector
+ * @returns StateValue from selector if provided, otherwise whole state
+ */
 export const useCachedStateValue = <T, S>(
   state: StateAll<T>,
   selector: (stateValue: T) => S = (stateValue) => toType<S>(stateValue),

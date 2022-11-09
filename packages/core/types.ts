@@ -1,9 +1,15 @@
 import { Emitter, EmitterSubscribe } from './emitters/create-emitter'
 import { PromiseData, PromiseStatus } from './computed/computed-types'
 
+/**
+ * Key identifier for family state.
+ */
 export type Key = string | number | symbol
+/**
+ * Equality check function.
+ */
 export type IsSame<T = unknown> = (a: T, b: T) => boolean
-export type Primitive = string | number | boolean | bigint | symbol | null | undefined
+
 export type OnFinish<T> = (options: { hasError: boolean; data: T | unknown }) => void
 export type StateInternal<T> = T extends Record<Key, unknown> ? T : T
 export interface StateOptions<T> {
@@ -11,11 +17,25 @@ export interface StateOptions<T> {
   onSet?: (oldValue: T, setStateCallback: () => T) => T
 }
 
+/**
+ * Set new state value function.
+ */
 export type SetStateValue<T> = ((value: T) => T) | T
+
+/**
+ * Set new state function
+ */
 export type StateValue<T, S> = undefined extends S ? T : S
 export type SetState<T> = (state: SetStateValue<T>) => void
+
+/**
+ * Getting state value function.
+ */
 export type GetState<T> = () => T
 
+/**
+ * State family subscriber
+ */
 export type FamilySubscribe<T> = (key: Key, listener: (parameter: SubscribeFamilyParameters<T>) => void) => void
 export interface SubscribeParameters<T = unknown> {
   prev: T
