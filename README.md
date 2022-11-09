@@ -172,9 +172,9 @@ const counterPlusUser = useStateValue(counterPlusUserAgeState('key'))
 ##### `createSlice`
 
 it's just helper function - slice wrapped around `createComputed`.
-There are scenarios when need to slice 1 state in same way in multiple components (`typescript const userAge = useStateValue(userState, user => user.age) `),
+There are scenarios when need to slice 1 state in same way in multiple components (`const userAge = useStateValue(userState, user => user.age) `),
 instead of writing same logic multiple times in react scope,
-`createSlice` helps to bring it to the global scope (`typescript const userAgeState = createSlice(userState, user => user.age) `).
+`createSlice` helps to bring it to the global scope (`const userAgeState = createSlice(userState, user => user.age) `).
 
 **Example:**
 
