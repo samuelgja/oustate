@@ -1,4 +1,4 @@
-### Ou state library
+### Oustate
 
 [![Build](https://github.com/samuelgjabel/oustate/actions/workflows/build.yml/badge.svg)](https://github.com/samuelgjabel/oustate/actions/workflows/build.yml) [![Code quality check](https://github.com/samuelgjabel/oustate/actions/workflows/code-check.yml/badge.svg)](https://github.com/samuelgjabel/oustate/actions/workflows/code-check.yml)
 
@@ -13,7 +13,7 @@ Solving problems like the dreaded [zombie child problem](https://react-redux.js.
 #### Install
 
 ```bash
-yarn add outstate  # or npm i outstate
+yarn add oustate  # or npm i oustate
 ```
 
 #### Simple state API
