@@ -30,6 +30,6 @@ const readmeDestinationPath = path.resolve(libraryPath, 'README.md')
 fs.copyFileSync(readmePath, readmeDestinationPath)
 
 // copy also source folder
-const sourcePath = path.resolve(rootDirectory, 'src')
-const sourceDestinationPath = path.resolve(libraryPath, 'src')
+const sourcePath = path.resolve(rootDirectory, 'packages/core')
+const sourceDestinationPath = path.resolve(libraryPath, 'packages/core')
 fs.copySync(sourcePath, sourceDestinationPath, { overwrite: true })

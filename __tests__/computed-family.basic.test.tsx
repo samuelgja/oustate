@@ -1,4 +1,4 @@
-import { createComputedFamily, createState, useStateValue } from '../src'
+import { createComputedFamily, createState, useStateValue } from '../packages/core'
 import { act, renderHook } from '@testing-library/react-hooks'
 import { useRef } from 'react'
 

@@ -1,4 +1,4 @@
-import { createStateFamily, useStateValue } from '../src'
+import { createStateFamily, useStateValue } from '../packages/core'
 import { act, renderHook } from '@testing-library/react-hooks'
 import { renderHookWithCount } from './utils'
 

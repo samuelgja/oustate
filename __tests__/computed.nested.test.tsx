@@ -1,4 +1,4 @@
-import { createState, createComputed, useStateValue, ComputedState } from '../src'
+import { createState, createComputed, useStateValue, ComputedState } from '../packages/core'
 import { act, renderHook } from '@testing-library/react-hooks'
 
 describe('Nested Computed states', () => {
