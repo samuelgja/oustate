@@ -1,4 +1,4 @@
-import { ComputedState, IsSame, StateAll, StateInternal } from '../types'
+import { ComputedState, IsSame, StateAll, StateInternal } from '../types/types'
 import { createComputed } from './create-computed'
 
 /**

@@ -10,14 +10,21 @@ import {
   SubscribeParametersType,
   ComputedState,
   AtomState,
-} from '../types'
+} from '../types/types'
 import { getId, isPromise, toType } from '../utils/common'
 import { getPromiseStatus } from '../utils/get-promise-status'
 import { cancelablePromise } from '../utils/cancelable-promise'
-import { GetSelectionOptions, GetState, InternalThrow, InternalThrowEnum, PromiseData, PromiseStatus } from './computed-types'
+import {
+  GetSelectionOptions,
+  GetState,
+  InternalThrow,
+  InternalThrowEnum,
+  PromiseData,
+  PromiseStatus,
+} from '../types/computed-types'
 import { computedSubscribe } from './computed-subscribe'
 import { createAbortController } from '../utils/create-abort-controller'
-import { clearComputedData, clearComputedPromiseData } from './computed-utils'
+import { clearComputedData, clearComputedPromiseData } from '../utils/computed-clears'
 
 const isThrow = (message: unknown) => {
   const promise = toType<InternalThrow>(message)

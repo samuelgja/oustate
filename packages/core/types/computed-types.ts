@@ -1,4 +1,4 @@
-import { SubscribeInternalParameters, IsSame, StateAll, Key } from '../types'
+import { SubscribeInternalParameters, IsSame, StateAll, Key } from './types'
 
 /**
  * Computed Get state type (get)

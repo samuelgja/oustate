@@ -1,4 +1,4 @@
-import { CommonFunctions, Family, FamilySubscribe, Key, StateInternal, SubscribeFamilyParameters } from '../types'
+import { CommonFunctions, Family, FamilySubscribe, Key, StateInternal, SubscribeFamilyParameters } from '../types/types'
 import { getId } from '../utils/common'
 /**
  * Create family internal function - used for create `stateFamily` and `computedFamily`

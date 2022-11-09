@@ -1,5 +1,5 @@
 import { createEmitter } from '../emitters/create-emitter'
-import { PromiseData, PromiseStatus } from '../computed/computed-types'
+import { PromiseData, PromiseStatus } from '../types/computed-types'
 import {
   GetState,
   SetState,
@@ -12,7 +12,7 @@ import {
   SubscribeParametersType,
   AtomState,
   StateDataInternal,
-} from '../types'
+} from '../types/types'
 import { getId } from '../utils/common'
 import { getPromiseStatus } from '../utils/get-promise-status'
 

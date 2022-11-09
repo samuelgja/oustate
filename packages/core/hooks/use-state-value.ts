@@ -1,5 +1,5 @@
-import { PromiseStatus } from '../computed/computed-types'
-import { IsSame, StateAll } from '../types'
+import { PromiseStatus } from '../types/computed-types'
+import { IsSame, StateAll } from '../types/types'
 import { toType } from '../utils/common'
 import { useLoadableStateValue } from './use-loadable-state-value'
 

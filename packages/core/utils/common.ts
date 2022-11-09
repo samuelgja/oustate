@@ -1,6 +1,6 @@
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector'
 import { Emitter } from '../emitters/create-emitter'
-import { IsSame } from '../types'
+import { IsSame } from '../types/types'
 
 /**
  * Todo need to remove this

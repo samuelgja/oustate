@@ -1,4 +1,4 @@
-import { PromiseData } from '../computed/computed-types'
+import { PromiseData } from '../types/computed-types'
 
 export const createAbortController = (promiseData: PromiseData) => {
   if (promiseData.cancel) {

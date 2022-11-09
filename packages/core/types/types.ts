@@ -1,5 +1,5 @@
-import { Emitter, EmitterSubscribe } from './emitters/create-emitter'
-import { PromiseData, PromiseStatus } from './computed/computed-types'
+import { Emitter, EmitterSubscribe } from '../emitters/create-emitter'
+import { PromiseData, PromiseStatus } from './computed-types'
 
 /**
  * Key identifier for family state.

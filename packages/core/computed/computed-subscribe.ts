@@ -7,7 +7,7 @@ import {
   SubscribeParametersType,
   Key,
   SubscribeInternalParameters,
-} from '../types'
+} from '../types/types'
 import { toType } from '../utils/common'
 
 /**

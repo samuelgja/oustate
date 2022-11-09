@@ -1,5 +1,5 @@
-import { PromiseStatus } from '../computed/computed-types'
-import { IsSame, StateAll } from '../types'
+import { PromiseStatus } from '../types/computed-types'
+import { IsSame, StateAll } from '../types/types'
 import { syncExternalStore, toType } from '../utils/common'
 
 export interface StateLoadable<T, S> {

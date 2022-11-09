@@ -1,5 +1,5 @@
-import { PromiseData, PromiseStatus } from '../computed/computed-types'
-import { SelectorSnapshotData, StateDataInternal, SubscribeInternalParameters } from '../types'
+import { PromiseData, PromiseStatus } from '../types/computed-types'
+import { SelectorSnapshotData, StateDataInternal, SubscribeInternalParameters } from '../types/types'
 
 interface Options<T, A = Awaited<T>> {
   data: StateDataInternal<T, A>

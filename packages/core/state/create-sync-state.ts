@@ -1,5 +1,5 @@
-import { PromiseStatus } from '../computed/computed-types'
-import { AtomState, IsSame, StateInternal } from '../types'
+import { PromiseStatus } from '../types/computed-types'
+import { AtomState, IsSame, StateInternal } from '../types/types'
 import { createState } from './create-state'
 
 export interface CreateSyncStateOptions<T> {

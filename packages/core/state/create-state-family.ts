@@ -1,5 +1,5 @@
 import { createState } from './create-state'
-import { StateInternal, StateOptions, AtomFamily, AtomState } from '../types'
+import { StateInternal, StateOptions, AtomFamily, AtomState } from '../types/types'
 import { createFamily } from '../family/create-family'
 
 /**

@@ -1,6 +1,6 @@
-import { Key, StateInternal, ComputedFamilyState, ComputedState } from '../types'
+import { Key, StateInternal, ComputedFamilyState, ComputedState } from '../types/types'
 import { ComputedOptions, createComputed } from './create-computed'
-import { GetSelectionOptions } from './computed-types'
+import { GetSelectionOptions } from '../types/computed-types'
 import { createFamily } from '../family/create-family'
 
 type GetSelectionFamily = GetSelectionOptions<{ key: Key }>

@@ -1,4 +1,4 @@
-import { PromiseData, PromiseStatus } from './computed-types'
+import { PromiseData, PromiseStatus } from '../types/computed-types'
 
 export const clearComputedPromiseData = (): PromiseData => ({
   status: PromiseStatus.SUCCESS,
