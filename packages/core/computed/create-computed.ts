@@ -17,6 +17,7 @@ import { cancelablePromise } from '../utils/cancelable-promise'
 import { GetSelectionOptions, GetState, InternalThrow, InternalThrowEnum, PromiseData, PromiseStatus } from './computed-types'
 import { computedSubscribe } from './computed-subscribe'
 import { createAbortController } from '../utils/create-abort-controller'
+import { clearComputedData, clearComputedPromiseData } from './computed-utils'
 
 const isThrow = (message: unknown) => {
   const promise = toType<InternalThrow>(message)
@@ -58,6 +59,11 @@ export const createComputed = <T>(
   const { isSame } = options || {}
   const id = getId()
   const statesUpdateVersions = new Map<Key, number>()
+
+  // DATA
+  let promiseData = clearComputedPromiseData()
+
+  let data: StateDataInternal<State> = clearComputedData(getSelection.constructor.name === 'AsyncFunction')
 
   // START LOADERS
   const startLoading = () => {
@@ -381,23 +387,6 @@ export const createComputed = <T>(
     return false
   }
 
-  // DATA
-  const promiseData: PromiseData = {
-    status: PromiseStatus.SUCCESS,
-    promises: [],
-    error: null,
-  }
-
-  const data: StateDataInternal<State> = {
-    cached: undefined!,
-    cachedAwaited: undefined!,
-    isAsync: getSelection.constructor.name === 'AsyncFunction',
-    isDead: true,
-    isResolving: false,
-    updateVersion: 0,
-    isInitialized: false,
-  }
-
   // GET SNAPSHOTS
   const getPromiseSnapshot = () => promiseData
   const getInternalSnapshot = () => {
@@ -454,12 +443,22 @@ export const createComputed = <T>(
     })
   }
 
+  const clear = () => {
+    for (let index = 0; index < promiseData.promises.length; index++) {
+      const promise = promiseData.promises[index]
+      promise.reject(null)
+    }
+    promiseData = clearComputedPromiseData()
+    data = clearComputedData(getSelection.constructor.name === 'AsyncFunction')
+  }
+
   return {
     __tag: undefined as AwaitedState,
     id: id,
     is: StateKeys.IS_COMPUTED,
     getState: getPromiseData,
     subscribe: subscribeEmitter.subscribe,
+    clear,
     __internal: {
       getSnapshot: getInternalSnapshot,
       __emitter: emitter,
