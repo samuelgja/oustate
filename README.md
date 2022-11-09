@@ -16,9 +16,7 @@ Solving problems like the dreaded [zombie child problem](https://react-redux.js.
 yarn add oustate  # or npm i oustate
 ```
 
-#### Simple state API
-
-There is few options how to create new state:
+#### API
 
 ##### `createState`
 
