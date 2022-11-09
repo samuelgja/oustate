@@ -20,7 +20,9 @@ yarn add oustate  # or npm i oustate
 
 There is few options how to create new state:
 
-##### `createState` - creating basic atom state
+##### `createState`
+
+creating basic atom state - it can be almost any value - object / atom / ...
 
 ```typescript
 import { createState } from 'oustate'
@@ -45,7 +47,11 @@ state.setState(3)
 const stateValue = useStateValue(state)
 ```
 
-##### `createStateFamily` - creating basic atom state where created state is actually function where first (key) parameter is unique state identifier.
+returns `AtomState` type
+
+##### `createStateFamily`
+
+same as `createState` but instead of returning `AtomState`, it **returns function** where first parameter (key) is unique state identifier and returns `AtomState`
 
 ```typescript
 import { createStateFamily } from 'oustate'
@@ -71,7 +77,10 @@ state('some-key').setState(3)
 const stateValue = useStateValue(state('some-key'))
 ```
 
-##### `createComputed` - sync / async computed state
+##### `createComputed`
+
+computed state is a state that depends on other states or other computed states. It is recomputed when the states it depends on change.
+**It can be also async**
 
 ```typescript
 import { createState, createComputed } from 'oustate'
@@ -88,7 +97,11 @@ await counterPlusUserAgeState.getState()
 const counterPlusUser = useStateValue(counterPlusUserAgeState)
 ```
 
-##### `createComputedFamily` - sync / async computed family state - where created computed is actually function where first (key) parameter is unique computed identifier.
+_Note: Keep in mind when using **useStateValue** and **async computed state**, component need to be wrapped into the [Suspense](https://reactjs.org/docs/react-api.html#reactsuspense)!_
+
+##### `createComputedFamily`
+
+same as `createComputed`, but instead of returning `ComputedState`, it **returns function** where first parameter (key) is unique state identifier and returns `ComputedState`
 
 ```typescript
 import { createState, createComputed } from 'oustate'
@@ -105,7 +118,12 @@ await counterPlusUserAgeState('key').getState()
 const counterPlusUser = useStateValue(counterPlusUserAgeState('key'))
 ```
 
-##### `createSlice` - it's just slice wrapped around `createComputed`
+##### `createSlice`
+
+it's just helper function - slice wrapped around `createComputed`.
+There are scenarios when need to slice 1 state in same way in multiple components (`typescript const userAge = useStateValue(userState, user => user.age) `),
+instead of writing same logic multiple times in react scope,
+`createSlice` helps to bring it to the global scope (`typescript const userAgeState = createSlice(userState, user => user.age) `).
 
 ```typescript
 import { createState, createSlice } from 'oustate'
