@@ -20,6 +20,7 @@ yarn add oustate  # or npm i oustate
 #### Quick Start
 
 Simple state example
+['live demo'](https://codesandbox.io/s/oustate-example-kj2ubq?file=/src/App.tsx)
 
 ```typescript
 import { createState, useStateValue } from 'oustate'
@@ -43,6 +44,7 @@ const App = () => {
 ```
 
 Simple state example with care about re-renders
+['live demo'](https://codesandbox.io/s/oustate-re-render-count-ggbgoq?file=/src/App.tsx)
 
 ```typescript
 import { createState, useStateValue } from 'oustate'
