@@ -78,7 +78,7 @@ creating basic atom state - it can be almost any value - object / atom / ...
 - onSet `typescript onSet?: (oldValue: T, setStateCallback: () => T) => T`
 
 **returns:**
-`AtomState` type
+`AtomState` type \n
 **Example:**
 
 ```typescript
