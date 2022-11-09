@@ -20,9 +20,11 @@ yarn add oustate  # or npm i oustate
 
 There is few options how to create new state:
 
-1. `createState` - creating basic atom state
+##### `createState` - creating basic atom state
 
 ```typescript
+import { createState } from 'oustate'
+
 const defaultState = 2
 const state = createState(defaultState, {
   // options are optional
@@ -43,9 +45,11 @@ state.setState(3)
 const stateValue = useStateValue(state)
 ```
 
-2. `createStateFamily` - creating basic atom state where created state is actually function where first (key) parameter is unique state identifier.
+##### `createStateFamily` - creating basic atom state where created state is actually function where first (key) parameter is unique state identifier.
 
 ```typescript
+import { createStateFamily } from 'oustate'
+
 const defaultState = 2
 const state = createStateFamily(defaultState, {
   // options are optional
@@ -67,8 +71,54 @@ state('some-key').setState(3)
 const stateValue = useStateValue(state('some-key'))
 ```
 
-3. `createComputed` - sync / async computed state
-4. `createSlice` - it's just slice wrapped around `createComputed`
+##### `createComputed` - sync / async computed state
+
+```typescript
+import { createState, createComputed } from 'oustate'
+
+const counterState = createState(0)
+const userState = createState({ name: 'John', age: 20 })
+
+// creating computed depends on counterState & userState
+const counterPlusUserAgeState = createComputed(({ get }) => get(counterState) + get(userState, (user) => user.age))
+// get state
+await counterPlusUserAgeState.getState()
+
+// react scope
+const counterPlusUser = useStateValue(counterPlusUserAgeState)
+```
+
+##### `createComputedFamily` - sync / async computed family state - where created computed is actually function where first (key) parameter is unique computed identifier.
+
+```typescript
+import { createState, createComputed } from 'oustate'
+
+const counterState = createState(0)
+const userState = createState({ name: 'John', age: 20 })
+
+// creating computed depends on counterState & userState
+const counterPlusUserAgeState = createComputedFamily(({ get }) => get(counterState) + get(userState, (user) => user.age))
+// get state
+await counterPlusUserAgeState('key').getState()
+
+// react scope
+const counterPlusUser = useStateValue(counterPlusUserAgeState('key'))
+```
+
+##### `createSlice` - it's just slice wrapped around `createComputed`
+
+```typescript
+import { createState, createSlice } from 'oustate'
+
+const userState = createState({ name: 'John', age: 20 })
+
+const userAgeState = createSlice(userState, (user) => user.age)
+// get state
+await userAgeState.getState()
+
+// react scope
+const counterPlusUser = useStateValue(userAgeState)
+```
 
 Passing functions into the state (like setting state) is not recommended.
 

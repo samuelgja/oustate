@@ -1,11 +1,13 @@
 {
   "name": "oustate",
-  "version": "0.0.1",
+  "version": "0.0.11",
   "author": "samuel.gjabel@gmail.com",
   "license": "MIT",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "react-native": "lib/src/index.ts",
+  "homepage": "https://github.com/samuelgjabel/oustate",
+  "repository": "https://github.com/samuelgjabel/oustate",
   "scripts": {
     "ts:build": "tsc ",
     "build": "concurrently -m 8 'yarn:build:*' && node scripts/copy-data.mjs",
