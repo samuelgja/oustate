@@ -66,6 +66,9 @@ const App = () => {
 }
 ```
 
+Simple computed example
+[live demo](https://codesandbox.io/s/oustate-computed-ef8ozl?file=/src/App.tsx)
+
 #### API
 
 ##### `createState`
