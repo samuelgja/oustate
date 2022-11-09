@@ -1,8 +1,11 @@
 {
+  "name": "oustate",
   "version": "0.0.1",
   "author": "samuel.gjabel@gmail.com",
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "react-native": "lib/src/index.ts",
   "scripts": {
     "ts:build": "tsc ",
     "build": "concurrently -m 8 'yarn:build:*' && node scripts/copy-data.mjs",
@@ -15,7 +18,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\"",
-    "test": "jest __tests__/*.test.* --env=jsdom --verbose --runInBand"
+    "test": "jest __tests__/*.test.* --env=jsdom --verbose --runInBand",
+    "test:it": "jest  --env=jsdom --verbose --runInBand",
+    "pub": "yarn build && cd lib && yarn publish"
   },
   "dependencies": {
     "use-sync-external-store": "^1.2.0"
@@ -35,7 +40,6 @@
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "14.4.3",
     "@types/jest": "27.0.1",
-    "@types/mocha": "^9.1.1",
     "@types/node": "16.7.13",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
@@ -50,7 +54,6 @@
     "babel-jest": "^29.0.2",
     "babel-plugin-module-resolver": "^4.1.0",
     "concurrently": "^7.4.0",
-    "esbuild": "^0.15.10",
     "eslint": "7.32.0",
     "eslint-plugin-react": "7.29.4",
     "eslint-plugin-react-hooks": "4.5.0",
@@ -68,7 +71,7 @@
     "rollup-plugin-esbuild": "^4.10.1",
     "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "29.0.0",
-    "typescript": "4.8.3"
+    "typescript": "4.8.4"
   },
   "peerDependencies": {
     "react": ">=16.8"

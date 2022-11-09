@@ -2,12 +2,44 @@ import { PromiseStatus } from '../computed/computed-types'
 import { AtomState, IsSame, StateInternal } from '../types'
 import { createState } from './create-state'
 
-export const createSyncState = <T>(options: {
+export interface CreateSyncStateOptions<T> {
+  /**
+   * On set new state value
+   */
   onSet?: (newValue: StateInternal<T>) => void
+  /**
+   * On load state
+   */
   onLoad?: () => StateInternal<T>
+  /**
+   * On snapshot state
+   */
   onSnapshot: (snapshot: (newValue: StateInternal<T>) => void) => void
+  /**
+   * Checking is state value is same - can be useful to avoid unnecessary rerenders - but it's not recommended to use it
+   */
   isSame?: IsSame<StateInternal<T>>
-}): AtomState<StateInternal<T>> => {
+}
+/**
+ * Creating of sync state - it's useful when need to sync state between external sources (like chat, realtime-messages, etc...).
+ * @param options
+ * @returns
+ * @example ```typescript
+ * const chatState = createSyncState({
+ *  onLoad: () => {
+ *    // load state from external source
+ *    return { messages: [] }
+ *  },
+ *  onSet: (newValue) => {
+ *
+ *  },
+ *  onSnapshot: (snapshot) => {
+ *    // subscribe to external source
+ *  }
+ * })
+ * ```
+ */
+export const createSyncState = <T>(options: CreateSyncStateOptions<T>): AtomState<StateInternal<T>> => {
   const { onSet, isSame, onLoad, onSnapshot } = options
 
   let resolveOnLoad: ((value: null) => void) | null = null

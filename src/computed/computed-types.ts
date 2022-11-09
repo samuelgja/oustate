@@ -1,4 +1,4 @@
-import { SubscribeInternalParameters, IsSame, StateAll } from '../types'
+import { SubscribeInternalParameters, IsSame, StateAll, Key } from '../types'
 
 export type GetState = <T extends StateAll<any>, S>(
   state: T,
@@ -32,3 +32,12 @@ interface InternalThrowInterface {
 }
 
 export type InternalThrow = Promise<SubscribeInternalParameters> & InternalThrowInterface
+
+interface GetSelectionOptionsBase {
+  get: GetState
+  abortSignal?: AbortSignal
+  isCanceled: () => boolean
+  key?: Key
+}
+
+export type GetSelectionOptions<T = unknown> = GetSelectionOptionsBase & T

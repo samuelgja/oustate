@@ -14,7 +14,7 @@ import {
 import { getId, isPromise, toType } from '../utils/common'
 import { getPromiseStatus } from '../utils/get-promise-status'
 import { cancelablePromise } from '../utils/cancelable-promise'
-import { GetState, InternalThrow, InternalThrowEnum, PromiseData, PromiseStatus } from './computed-types'
+import { GetSelectionOptions, GetState, InternalThrow, InternalThrowEnum, PromiseData, PromiseStatus } from './computed-types'
 import { computedSubscribe } from './computed-subscribe'
 import { createAbortController } from '../utils/create-abort-controller'
 
@@ -24,14 +24,27 @@ const isThrow = (message: unknown) => {
 }
 export interface ComputedOptions<T> {
   isSame?: IsSame<T>
+  key?: Key
 }
 
+/**
+ * Computed state is a state that depends on other states or other computed states.
+ * It is recomputed when the states it depends on change.
+ * **It can be also async**.
+ * @example ```typescript
+ * // global scope
+ * const counterState = createState(0)
+ * const userState = createState({ name: 'John', age: 20 })
+ * const counterPlusUserAgeState = createComputed(
+ *  ({get}) => get(counterState) + get(userState, (user) => user.age),
+ * )
+ *
+ * // react scope
+ * const counterPlusUser = useStateValue(counterPlusUserAgeState)
+ * ```
+ */
 export const createComputed = <T>(
-  getSelection: (options: {
-    get: GetState
-    abortSignal?: AbortSignal
-    isCanceled: () => boolean
-  }) => StateInternal<T> | Promise<StateInternal<T>>,
+  getSelection: (options: GetSelectionOptions) => StateInternal<T> | Promise<StateInternal<T>>,
   options?: ComputedOptions<StateInternal<T>>,
 ): ComputedState<StateInternal<T>> => {
   type State = StateInternal<T>
@@ -275,6 +288,7 @@ export const createComputed = <T>(
         get,
         abortSignal: promiseData.abortController?.signal,
         isCanceled: () => isCanceled,
+        key: options?.key,
       })
 
       startLoading()
@@ -318,6 +332,7 @@ export const createComputed = <T>(
         get,
         abortSignal: promiseData.abortController?.signal,
         isCanceled: () => false,
+        key: options?.key,
       })
 
       data.isDead = false

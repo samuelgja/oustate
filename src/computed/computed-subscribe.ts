@@ -10,6 +10,9 @@ import {
 } from '../types'
 import { toType } from '../utils/common'
 
+/**
+ * Subscribe to the computed state - it's used for internal purposes.
+ */
 export const computedSubscribe = <T, S>(options: {
   unsubscribeListeners: Map<Key, () => void>
   stateId: Key

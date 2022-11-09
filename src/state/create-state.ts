@@ -16,6 +16,23 @@ import {
 import { getId } from '../utils/common'
 import { getPromiseStatus } from '../utils/get-promise-status'
 
+/**
+ * Creating of basic atom state.
+ * @param defaultState - any value
+ * @param options - optional options for state (isSame, onSet)
+ * @returns AtomState
+ * @example ```typescript
+ * // global scope
+ * const counterState = createState(0)
+ * const userState = createState({ name: 'John', age: 20 })
+ *
+ * // react scope
+ * const counter = useStateValue(counterState)
+ * const user = useStateValue(userState)
+ * // when need just partial data from state, it can be sliced (slice don't need to be memoized - check docs)
+ * const userAge = useStateValue(userState, (state) => state.age) // this will help to avoid unnecessary re-renders
+ * ```
+ */
 export const createState = <T>(
   defaultState: StateInternal<T>,
   options?: StateOptions<StateInternal<T>>,

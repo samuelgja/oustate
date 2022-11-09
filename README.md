@@ -1,4 +1,4 @@
-### Omg state library
+### Ou state library
 
 [![Build](https://github.com/samuelgjabel/oustate/actions/workflows/build.yml/badge.svg)](https://github.com/samuelgjabel/oustate/actions/workflows/build.yml) [![Code quality check](https://github.com/samuelgjabel/oustate/actions/workflows/code-check.yml/badge.svg)](https://github.com/samuelgjabel/oustate/actions/workflows/code-check.yml)
 
@@ -13,7 +13,7 @@ Solving problems like the dreaded [zombie child problem](https://react-redux.js.
 #### Install
 
 ```bash
-yarn add omg-state  # or npm i omg-state
+yarn add outstate  # or npm i outstate
 ```
 
 #### Simple state API
@@ -21,7 +21,52 @@ yarn add omg-state  # or npm i omg-state
 There is few options how to create new state:
 
 1. `createState` - creating basic atom state
-2. `createStateFamily` - creating basic atom state with passing variable while calling
+
+```typescript
+const defaultState = 2
+const state = createState(defaultState, {
+  // options are optional
+  isSame: (prev, next) => true,
+  onSet(oldValue, setStateCallback) {
+    const newValue = setStateCallback()
+    console.log(oldValue, newValue)
+  },
+})
+
+// get state out of react scope
+state.getState()
+
+// set new state
+state.setState(3)
+
+// use state in react scope
+const stateValue = useStateValue(state)
+```
+
+2. `createStateFamily` - creating basic atom state where created state is actually function where first (key) parameter is unique state identifier.
+
+```typescript
+const defaultState = 2
+const state = createStateFamily(defaultState, {
+  // options are optional
+  isSame: (prev, next) => true,
+  onSet(oldValue, setStateCallback) {
+    const newValue = setStateCallback()
+    console.log(oldValue, newValue)
+    return newValue
+  },
+})
+
+// get state out of react scope
+state('some-key').getState()
+
+// set new state
+state('some-key').setState(3)
+
+// use state in react scope
+const stateValue = useStateValue(state('some-key'))
+```
+
 3. `createComputed` - sync / async computed state
 4. `createSlice` - it's just slice wrapped around `createComputed`
 
@@ -41,7 +86,6 @@ Keep in mind that using selector functions in `useStateValue` hook don't need to
 TODO:
 
 1. add `SSR` implementation
-2. add `createComputedFamily` implementation
 
 Well `tested`, written in `typescript`.
 
