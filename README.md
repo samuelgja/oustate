@@ -14,7 +14,7 @@ Solving problems like the dreaded [zombie child problem](https://react-redux.js.
 - [install](#install)
 - [quick-start](#quick-start)
 - [api](#api)
-- [babel-plugin](#for-lazy-persons-🥱😴)
+- [babel-plugin](#babel-plugin)
 
 ---
 
@@ -238,9 +238,9 @@ Keep in mind that using selector functions in all hooks **don't need to be memoi
 
 ---
 
-#### For lazy persons 🥱😴
+#### babel-plugin
 
-`oustate-babel-transform-plugin`
+`oustate-babel-transform-plugin` - For lazy persons 🥱😴
 
 - there is also babel plugin to avoid re-renders without defining areEqual function manually - it will generates compare function automatically.
   _when there is manual compare function already defined in the code - this plugin will ignore it._
