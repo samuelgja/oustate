@@ -84,6 +84,25 @@ Simple computed async example
 
 creating basic atom state - it can be almost any value - object / atom / ...
 
+**Types**
+
+```typescript
+export interface StateOptions<T> {
+  isSame?: IsSame<T>
+  onSet?: (oldValue: T, setStateCallback: () => T) => T
+}
+/**
+ * Creating of basic atom state.
+ * @param defaultState - any value
+ * @param options - optional options for state (isSame, onSet)
+ * @returns AtomState
+ */
+export declare const createState: <T>(
+  defaultState: StateInternal<T>,
+  options?: StateOptions<StateInternal<T>> | undefined,
+) => AtomState<StateInternal<T>>
+```
+
 **Example:**
 
 ```typescript
@@ -112,6 +131,23 @@ const stateValue = useStateValue(state)
 ##### `createStateFamily`
 
 same as `createState` but instead of returning `AtomState`, it **returns function** where first parameter (key) is unique state identifier and returns `AtomState`
+
+**Types**
+
+```typescript
+export interface StateOptions<T> {
+  isSame?: IsSame<T>
+  onSet?: (oldValue: T, setStateCallback: () => T) => T
+}
+/**
+ * Create atom family state. It's same as createState but instead of return `AtomState` it returns `AtomFamily`.
+ * `AtomFamily` is function that accepts `key` and returns `AtomState`.
+ */
+export declare const createStateFamily: <T>(
+  defaultState: StateInternal<T>,
+  options?: StateOptions<StateInternal<T>> | undefined,
+) => AtomFamily<StateInternal<T>>
+```
 
 **Example:**
 
@@ -143,6 +179,27 @@ const stateValue = useStateValue(state('some-key'))
 
 computed state is a state that depends on other states or other computed states. It is recomputed when the states it depends on change.
 **It can be also async**
+
+**Types**
+
+```typescript
+interface GetSelectionOptionsBase {
+  get: GetState
+  abortSignal?: AbortSignal
+  isCanceled: () => boolean
+  key?: Key
+}
+export declare type GetSelectionOptions<T = unknown> = GetSelectionOptionsBase & T
+/**
+ * Computed state is a state that depends on other states or other computed states.
+ * It is recomputed when the states it depends on change.
+ * **It can be also async**.
+ */
+export declare const createComputed: <T>(
+  getSelection: (options: GetSelectionOptions) => StateInternal<T> | Promise<StateInternal<T>>,
+  options?: ComputedOptions<StateInternal<T>> | undefined,
+) => ComputedState<StateInternal<T>>
+```
 
 **Example:**
 
