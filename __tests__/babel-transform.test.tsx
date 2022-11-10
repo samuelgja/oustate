@@ -48,7 +48,7 @@ describe('Babel Transform test', () => {
 
     const expectedTransformedCode = `
     "use strict";
-    
+
     function _cC_test(p, n) {
       if (p?.state !== n?.state) {
         return false;
@@ -81,7 +81,7 @@ describe('Babel Transform test', () => {
 
     const expectedTransformedCode = `
     "use strict";
-    
+
     function _cC_test(p, n) {
       if (p?.state !== n?.state) {
         return false;
@@ -94,7 +94,6 @@ describe('Babel Transform test', () => {
     var app = function app() {
       return /*#__PURE__*/React.createElement("div", null, "hello");
     };
-
 
     `
     const { code: transformedCode } = transformSync(code, { plugins: [stateTransformPlugin], configFile: true }) || {}
@@ -149,6 +148,27 @@ describe('Babel Transform test', () => {
     } = useStateValue(abc, undefined, _cC_test);
     `
     const { code: transformedCode } = transformSync(code, { plugins: [stateTransformPlugin], configFile: false }) || {}
+    if (!transformedCode) {
+      throw new Error('No code transformed')
+    }
+
+    expect(format(transformedCode, { parser: 'babel' })).toBe(format(expectedTransformedCode, { parser: 'babel' }))
+  })
+  it('should transform use hooks with react-native metro babel preset', () => {
+    const code = `
+
+    import {useStateValue} from 'oustate'
+    const {hello} = useStateValue(abc)
+    `
+
+    const expectedTransformedCode = ` 
+    function _cC_test(p,n){if(p?.hello!==n?.hello){return false;}return true;}function _cC_test(p,n){if(p?.state?.stateX?.[5]!==n?.state?.stateX?.[5]){return false;}if(p?.state?.stateX?.[4]!==n?.state?.stateX?.[4]){return false;}if(p?.state?.stateX?.[3]!==n?.state?.stateX?.[3]){return false;}if(p?.state?.stateX?.[2]!==n?.state?.stateX?.[2]){return false;}if(p?.state?.stateX?.[1]!==n?.state?.stateX?.[1]){return false;}if(p?.state?.stateX?.[0]!==n?.state?.stateX?.[0]){return false;}return true;}function _cC_test(p,n){if(p?.state!==n?.state){return false;}return true;}var _oustate=require("oustate");var _useStateValue=(0,_oustate.useStateValue)(abc,undefined,_cC_test),hello=_useStateValue.hello;`
+    const { code: transformedCode } =
+      transformSync(code, {
+        presets: ['module:metro-react-native-babel-preset'],
+        plugins: [stateTransformPlugin],
+        configFile: false,
+      }) || {}
     if (!transformedCode) {
       throw new Error('No code transformed')
     }

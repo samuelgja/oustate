@@ -14,7 +14,7 @@ export type OnFinish<T> = (options: { hasError: boolean; data: T | unknown }) =>
 export type StateInternal<T> = T extends Record<Key, unknown> ? T : T
 export interface StateOptions<T> {
   isSame?: IsSame<T>
-  onSet?: (oldValue: T, setStateCallback: () => T) => T
+  onSet?: (oldValue: T, setStateCallback: (draft: T) => T) => T
 }
 
 /**

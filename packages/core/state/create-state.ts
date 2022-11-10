@@ -55,8 +55,8 @@ export const createState = <T>(
   if (onSet) {
     getSetStateValue = (state: SetStateValue<State>): State => {
       if (typeof state === 'function') {
-        return onSet(data.cachedAwaited, () => {
-          return (state as any)(data.cachedAwaited)
+        return onSet(data.cachedAwaited, (draft) => {
+          return (state as any)(draft)
         })
       }
       return onSet(data.cachedAwaited, () => {
