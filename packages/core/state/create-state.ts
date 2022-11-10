@@ -40,6 +40,7 @@ export const createState = <T>(
   const id = getId()
   type State = StateInternal<T>
   const { isSame, onSet } = options || {}
+
   let getSetStateValue = (state: SetStateValue<State>): State => {
     if (typeof state === 'function') {
       return (state as any)(data.cachedAwaited)
@@ -93,6 +94,8 @@ export const createState = <T>(
   const promiseEmitter = createEmitter<PromiseData>(() => promiseData)
 
   const setState: SetState<State> = (stateValue) => {
+    const prev = data.cachedAwaited
+
     const newState = getSetStateValue(stateValue)
 
     const isEqual = isSame?.(data.cachedAwaited, newState)
@@ -104,7 +107,6 @@ export const createState = <T>(
 
     data.updateVersion++
 
-    const prev = data.cachedAwaited
     data.cachedAwaited = newState
     subscribeEmitter.emit({ prev, next: newState })
     emitterInternal.emit({

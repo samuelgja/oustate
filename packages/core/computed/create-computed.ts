@@ -275,6 +275,18 @@ export const createComputed = <T>(
     return prev === next
   }
 
+  const onError = (error: any, onFinish?: OnFinish) => {
+    const isThrow = resolveInternalThrow(error, onFinish)
+    if (isThrow) {
+      return
+    }
+
+    onThrowError(error)
+    onFinish?.({ hasError: true, data: error })
+
+    throw new Error(error?.message)
+  }
+
   // MAIN GET DATA
   const resolveSelection = (onFinish?: OnFinish) => {
     // FOR ASYNC
@@ -325,15 +337,8 @@ export const createComputed = <T>(
               onFinish?.({ hasError: false, data: data.cachedAwaited })
               return
             }
-            const isThrow = resolveInternalThrow(error, onFinish)
-            if (isThrow) {
-              return
-            }
 
-            onThrowError(error)
-            onFinish?.({ hasError: true, data: error })
-
-            throw new Error(error)
+            onError(error, onFinish)
           })
       }
       return
@@ -362,14 +367,7 @@ export const createComputed = <T>(
 
       return newState
     } catch (error: any) {
-      const isThrow = resolveInternalThrow(error, onFinish)
-
-      if (isThrow) {
-        return
-      }
-      onFinish?.({ hasError: true, data: error })
-      onThrowError(error)
-      throw new Error(error?.message)
+      onError(error, onFinish)
     }
   }
 

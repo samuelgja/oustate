@@ -1,6 +1,7 @@
 import { createState, createComputed, useStateValue, ComputedState } from '../packages/core'
 import { act, renderHook } from '@testing-library/react-hooks'
 import { renderHookWithCount } from './utils'
+import { waitFor } from '@testing-library/react'
 
 const waitTime = 2
 
@@ -62,6 +63,7 @@ describe('Basic Async Computed states', () => {
 
     expect(result.current).toBe(1)
   })
+
   it('should create 100 nested async computed and get value in react hook and re-render count should be 3', async () => {
     const nestedComputed: ComputedState<any>[] = []
     const state = createState({ count: 0 })
@@ -143,5 +145,32 @@ describe('Basic Async Computed states', () => {
     expect(result.current.hook).toBe(1)
     // received 3 re-renders because its async state - so it goes to loading state & after loading it goes back to normal state
     expect(result.current.renderCount).toBe(3)
+  })
+  it('should create computed async state and update counter 10x in same time', async () => {
+    const state = createState({ count: 0 })
+    const computed = createComputed(async ({ get }) => {
+      await awaiter(waitTime)
+      return get(state, (value) => value.count)
+    })
+    const { result } = renderHookWithCount(() => useStateValue(computed))
+
+    const updateCount = 10
+
+    await act(async () => {
+      for (let index = 0; index < updateCount; index++) {
+        state.setState((old) => {
+          const newState = { ...old }
+          newState.count++
+
+          return newState
+        })
+        await awaiter(waitTime)
+      }
+    })
+
+    await waitFor(() => {
+      expect(result.current.renderCount).toBe(1)
+      expect(result.current.hook).toBe(10)
+    })
   })
 })
