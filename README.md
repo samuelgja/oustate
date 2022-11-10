@@ -72,9 +72,12 @@ Simple computed example
 Simple computed async example
 [live demo](https://codesandbox.io/s/oustate-async-computed-sl4h55?file=/src/App.tsx)
 
-#### `oustate-babel-transform-plugin` For lazy persons 🥱😴
+#### For lazy persons 🥱😴
+
+`oustate-babel-transform-plugin`
 
 - there is also babel plugin to avoid re-renders without defining areEqual function manually - it will generates compare function automatically.
+  _when there is manual compare function already defined in the code - this plugin will ignore it._
 
 for example something like this:
 
