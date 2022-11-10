@@ -15,6 +15,7 @@ Solving problems like the dreaded [zombie child problem](https://react-redux.js.
 - [Quick start](#quick-start)
 - [Api](#api)
 - [Babel transform plugin](#babel-plugin)
+- [Slicing guide](#slicing-guide)
 
 #### Install
 
@@ -308,7 +309,7 @@ someState.value // transform will be ignored because it's not called directly fr
 
 to avoid re-renders, state can be sliced in `react scope`, `computed scope`.
 
-- react-scope
+- **react-scope**<br/>
   example how to slice state and avoid re-renders when not used values are changed:
 
   ```typescript
@@ -338,7 +339,7 @@ to avoid re-renders, state can be sliced in `react scope`, `computed scope`.
   const { counter } = useStateValue(userState, (state) => ({ counter: state.counter }), isSame) // equality function comparing always object from selector, if provided, otherwise state.
   ```
 
-- computed-scope
+- **computed-scope**<br/>
   example how to slice state in computed and avoid re-renders & computed calls when not used values are changed:
 
   ```typescript
