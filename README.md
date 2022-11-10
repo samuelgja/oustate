@@ -235,8 +235,8 @@ Keep in mind that using selector functions in all hooks **don't need to be memoi
 `oustate-babel-transform-plugin` - For lazy persons 🥱😴
 
 - there is also babel plugin to avoid re-renders without defining areEqual function manually - it will generates compare function automatically.
-  <br/>_if there is manually defined compare function - this plugin will ignore it._
-  <br/>_if there is defined custom slice selector - it will respect it._
+  <br/>_if there is manually defined compare function - plugin will ignore it._
+  <br/>_if there is defined custom slice selector - plugin will respect it._
 
 for example something like this:
 
