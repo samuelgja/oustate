@@ -11,8 +11,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@babel/core": "^7.20.2",
-    "use-sync-external-store": "^1.2.0"
+    "@babel/core": "^7.20.2"
   },
   "peerDependencies": {
     "react": ">=16.8"
