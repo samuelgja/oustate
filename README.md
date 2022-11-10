@@ -226,11 +226,6 @@ hook for getting state value but with more control over loading state - componen
 
 hook for getting state with caching control - it's useful for async computed states - when on first load it went to the suspense, but on second change it will returns loading state + old state
 
-Keep in mind that using selector functions in all hooks **don't need to be memoized!**
-[Selectors no longer need to be memoized](https://github.com/reactwg/react-18/discussions/86)
-
-**👋 Welcome back inline functions 👋**
-
 #### babel-plugin
 
 `oustate-babel-transform-plugin` - For lazy persons 🥱😴
@@ -347,6 +342,11 @@ to avoid re-renders, state can be sliced in `react scope`, `computed scope`.
     return get(userState, (state) => state.counter) // slicing the state in computed
   })
   ```
+
+Keep in mind that using slices / selectors in all hooks **don't need to be memoized!**
+[Selectors no longer need to be memoized](https://github.com/reactwg/react-18/discussions/86)
+
+**👋 Welcome back inline functions 👋**
 
 Well `tested`, written in `typescript`.
 
