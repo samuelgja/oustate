@@ -1,24 +1,17 @@
 {
   "name": "oustate-babel-transform-plugin",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": ".lib/index.js",
+  "types": ".lib/index.d.ts",
   "version": "0.0.1",
   "author": "samuel.gjabel@gmail.com",
   "license": "MIT",
   "homepage": "https://github.com/samuelgjabel/oustate",
   "repository": "https://github.com/samuelgjabel/oustate",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "pub": "yarn build && yarn publish"
   },
   "dependencies": {
     "@babel/core": "^7.20.2"
-  },
-  "peerDependencies": {
-    "react": ">=16.8"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": true
-    }
   }
 }

@@ -24,7 +24,8 @@
     "format": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\"",
     "test": "jest __tests__/*.test.* --env=jsdom --verbose --runInBand",
     "test:it": "jest  --env=jsdom --verbose --runInBand",
-    "pub": "yarn code-check && yarn test && yarn build && cd lib && yarn publish"
+    "pub": "yarn code-check && yarn test && yarn build && cd lib && yarn publish",
+    "pub:babel-transform": "yarn code-check && yarn test && cd packages/babel-transform && yarn pub"
   },
   "dependencies": {
     "use-sync-external-store": "^1.2.0"

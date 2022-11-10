@@ -50,7 +50,7 @@ export const createSyncState = <T>(options: CreateSyncStateOptions<T>): AtomStat
   const state = createState(initialValue as StateInternal<T>, {
     isSame,
     onSet: (oldValue, getValue) => {
-      const newValue = getValue()
+      const newValue = getValue(oldValue)
       if (onSet && !isSame?.(oldValue, newValue)) {
         onSet(newValue)
       }
