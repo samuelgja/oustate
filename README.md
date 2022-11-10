@@ -320,7 +320,7 @@ to avoid re-renders, state can be sliced in `react scope`, `computed scope`.
   In this example component will re-render on each userState change, because instead of picking state data directly, it's added to the new object reference.
   Creating new references with slice / selector will always **cause re-renders**.<br/>
   There is fix around it and it's third parameter in hooks - equality check.
-  That's why [Babel transform plugin](#babel-plugin) exist.
+  That's why [babel transform plugin](#babel-plugin) exist.
   Also there can be used third party libraries to equality check like [react-fast-compare](https://github.com/FormidableLabs/react-fast-compare).
 
   example with equality check:
