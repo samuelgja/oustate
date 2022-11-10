@@ -11,6 +11,8 @@ Based on React [hooks](https://reactjs.org/docs/hooks-reference.html) api. Inspi
 
 Solving problems like the dreaded [zombie child problem](https://react-redux.js.org/api/hooks#stale-props-and-zombie-children), [react concurrency](https://reactjs.org/blog/2022/03/29/react-v18.html) and [context loss](https://github.com/facebook/react/issues/13332) between mixed renderers with focus on **re-renders reduction**.
 
+---
+
 #### Install
 
 ```bash
@@ -18,6 +20,8 @@ yarn add oustate  # or npm i oustate
 ```
 
 [babel-plugin](#### For lazy persons 🥱😴)
+
+---
 
 #### Quick Start
 
@@ -73,6 +77,8 @@ Simple computed example
 
 Simple computed async example
 [live demo](https://codesandbox.io/s/oustate-async-computed-sl4h55?file=/src/App.tsx)
+
+---
 
 #### API
 
@@ -227,6 +233,8 @@ Keep in mind that using selector functions in all hooks **don't need to be memoi
 
 **👋 Welcome back inline functions 👋**
 
+---
+
 #### For lazy persons 🥱😴
 
 `oustate-babel-transform-plugin`
@@ -291,6 +299,8 @@ const { value } = someState // transform will be ignored because it's not called
 const someState = useStateValue(state)
 someState.value // transform will be ignored because it's not called directly from useStateValue hook.
 ```
+
+---
 
 Well `tested`, written in `typescript`.
 
