@@ -19,7 +19,7 @@ Solving problems like the dreaded [zombie child problem](https://react-redux.js.
 yarn add oustate  # or npm i oustate
 ```
 
-[babel-plugin](#### For lazy persons 🥱😴)
+[babel-plugin](####api)
 
 ---
 
