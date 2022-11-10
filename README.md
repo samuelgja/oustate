@@ -11,6 +11,11 @@ Based on React [hooks](https://reactjs.org/docs/hooks-reference.html) api. Inspi
 
 Solving problems like the dreaded [zombie child problem](https://react-redux.js.org/api/hooks#stale-props-and-zombie-children), [react concurrency](https://reactjs.org/blog/2022/03/29/react-v18.html) and [context loss](https://github.com/facebook/react/issues/13332) between mixed renderers with focus on **re-renders reduction**.
 
+- [install](#install)
+- [quick-start](#quick-start)
+- [api](#api)
+- [babel-plugin](#for-lazy-persons-🥱😴)
+
 ---
 
 #### Install
@@ -18,8 +23,6 @@ Solving problems like the dreaded [zombie child problem](https://react-redux.js.
 ```bash
 yarn add oustate  # or npm i oustate
 ```
-
-[babel-plugin](####api)
 
 ---
 
