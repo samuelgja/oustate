@@ -1,7 +1,8 @@
 {
   "name": "oustate",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "author": "samuel.gjabel@gmail.com",
+  "description": "👀 Another React state management library",
   "license": "MIT",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -22,7 +23,7 @@
     "format": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\"",
     "test": "jest __tests__/*.test.* --env=jsdom --verbose --runInBand",
     "test:it": "jest  --env=jsdom --verbose --runInBand",
-    "pub": "yarn build && cd lib && yarn publish"
+    "pub": "yarn code-check && yarn test && yarn build && cd lib && yarn publish"
   },
   "dependencies": {
     "use-sync-external-store": "^1.2.0"
