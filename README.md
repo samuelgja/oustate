@@ -16,15 +16,11 @@ Solving problems like the dreaded [zombie child problem](https://react-redux.js.
 - [api](#api)
 - [babel-plugin](#babel-plugin)
 
----
-
 #### Install
 
 ```bash
 yarn add oustate  # or npm i oustate
 ```
-
----
 
 #### Quick Start
 
@@ -80,8 +76,6 @@ Simple computed example
 
 Simple computed async example
 [live demo](https://codesandbox.io/s/oustate-async-computed-sl4h55?file=/src/App.tsx)
-
----
 
 #### API
 
@@ -236,8 +230,6 @@ Keep in mind that using selector functions in all hooks **don't need to be memoi
 
 **👋 Welcome back inline functions 👋**
 
----
-
 #### babel-plugin
 
 `oustate-babel-transform-plugin` - For lazy persons 🥱😴
@@ -302,8 +294,6 @@ const { value } = someState // transform will be ignored because it's not called
 const someState = useStateValue(state)
 someState.value // transform will be ignored because it's not called directly from useStateValue hook.
 ```
-
----
 
 Well `tested`, written in `typescript`.
 
