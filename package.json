@@ -1,6 +1,6 @@
 {
   "name": "oustate",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "author": "samuel.gjabel@gmail.com",
   "description": "👀 Another React state management library",
   "license": "MIT",
@@ -9,6 +9,7 @@
   "react-native": "lib/src/index.ts",
   "homepage": "https://github.com/samuelgjabel/oustate",
   "repository": "https://github.com/samuelgjabel/oustate",
+  "sideEffects": false,
   "scripts": {
     "ts:build": "tsc ",
     "build": "concurrently -m 8 'yarn:build:*' && node scripts/copy-data.mjs",
