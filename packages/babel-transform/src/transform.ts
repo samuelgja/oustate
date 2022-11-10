@@ -4,8 +4,11 @@ import { extractObjectPattern } from './extract-object-array-pattern'
 import { arrayToRecord, getId } from './utils'
 const hooks = ['useStateValue', 'useLoadableStateValue', 'useCachedStateValue']
 const hooksRecord = arrayToRecord(hooks)
-
 const importName = 'oustate'
+
+/**
+ * Transform oustate hooks to shallow compare automatically - but without some optimizations
+ */
 export const transformHook = (ast: Node, outputTransforms: Record<string, true> = {}) => {
   const hooksRecordLocal: Record<string, boolean> = {}
   let hasIt = false
