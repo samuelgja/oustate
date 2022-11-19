@@ -27,7 +27,12 @@ fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
 // also copy readme file
 const readmePath = path.resolve(rootDirectory, 'README.md')
 const readmeDestinationPath = path.resolve(libraryPath, 'README.md')
+
 fs.copyFileSync(readmePath, readmeDestinationPath)
+
+const source = path.resolve(rootDirectory, 'packages/core')
+const sourceDestination = path.resolve(libraryPath, 'src')
+fs.copySync(source, sourceDestination)
 
 // copy also source folder
 const sourcePath = path.resolve(rootDirectory, 'packages/core')
