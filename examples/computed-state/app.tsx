@@ -49,9 +49,13 @@ const Counter2Component = () => {
     </>
   )
 }
+
+const simpleState = createState(0)
 export default function App() {
+  const counterSimple = useStateValue(simpleState)
   return (
     <div className="App" style={{ display: 'flex', flexDirection: 'column' }}>
+      {counterSimple}
       <h1>Simple state with care about re-renders</h1>
       <Counter1Component />
       <Counter2Component />

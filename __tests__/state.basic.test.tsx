@@ -26,11 +26,18 @@ describe('Basic state', () => {
     const state = createState({ count: 0 })
     const { result } = renderHookWithCount(() => useStateValue(state))
     expect(result.current.hook.count).toBe(0)
+    expect(result.current.renderCount).toBe(1)
     act(() => {
       state.setState({ count: 1 })
     })
     expect(result.current.hook.count).toBe(1)
     expect(result.current.renderCount).toBe(2)
+
+    act(() => {
+      state.setState({ count: 2 })
+    })
+    expect(result.current.hook.count).toBe(2)
+    expect(result.current.renderCount).toBe(3)
   })
 
   it('should create state & render it to 100 components at the same time', async () => {
