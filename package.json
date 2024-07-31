@@ -1,6 +1,6 @@
 {
   "name": "oustate",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "samuel.gjabel@gmail.com",
   "description": "👀 Another React state management library",
   "license": "MIT",
@@ -12,20 +12,20 @@
   "sideEffects": false,
   "scripts": {
     "ts:build": "tsc ",
-    "build": "concurrently -m 8 'yarn:build:*' && node scripts/copy-data.mjs",
+    "build": "concurrently -m 8 'bun run:build:*' && node scripts/copy-data.mjs",
     "build:cjs": "rollup -c --bundleConfigAsCjs --format=cjs && rm -rf lib/cjs/node_modules && rm -rf lib/cjs/_virtual",
     "build:esm": "rollup -c --bundleConfigAsCjs --format=esm && rm -rf lib/esm/node_modules && rm -rf lib/esm/_virtual",
     "build:umd": "rollup -c --bundleConfigAsCjs --format=umd && rm -rf lib/umd/node_modules && rm -rf lib/umd/_virtual",
     "build:types": "rollup -c --bundleConfigAsCjs --format=types && rm -rf lib/types/index.js",
     "publish:prepare": "node scripts/publish",
-    "code-check": "yarn format && yarn typecheck && yarn lint",
+    "code-check": "bun run format && bun run typecheck && bun run lint",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\"",
     "test": "jest __tests__/*.test.* --env=jsdom --verbose --runInBand",
     "test:it": "jest  --env=jsdom --verbose --runInBand",
-    "pub": "yarn code-check && yarn test && yarn build && cd lib && yarn publish",
-    "pub:babel-transform": "yarn code-check && yarn test && cd packages/babel-transform && yarn pub"
+    "pub": "bun run code-check && bun run test && bun run build && cd lib && bun run publish",
+    "pub:babel-transform": "bun run code-check && bun run test && cd packages/babel-transform && bun run pub"
   },
   "dependencies": {
     "use-sync-external-store": "^1.2.0"

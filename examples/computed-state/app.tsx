@@ -64,7 +64,8 @@ export default function App() {
           return old
         })
       }}
-      style={{ display: 'flex', flexDirection: 'column' }}>
+      style={{ display: 'flex', flexDirection: 'column' }}
+    >
       {counterSimple}
       <h1>Simple state with care about re-renders</h1>
       <Counter1Component />
