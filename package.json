@@ -1,6 +1,6 @@
 {
   "name": "oustate",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "samuel.gjabel@gmail.com",
   "description": "👀 Another React state management library",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "format": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\"",
     "test": "jest __tests__/*.test.* --env=jsdom --verbose --runInBand",
     "test:it": "jest  --env=jsdom --verbose --runInBand",
-    "pub": "bun run code-check && bun run test && bun run build && cd lib && bun run publish",
+    "pub": "bun run code-check && bun run test && bun run build && cd lib && npm publish",
     "pub:babel-transform": "bun run code-check && bun run test && cd packages/babel-transform && bun run pub"
   },
   "dependencies": {

@@ -20,7 +20,6 @@ export default function (arguments_) {
   }
 
   const isDirDisabled = isTypes || arguments_.format === 'umd'
-
   const { format } = arguments_
 
   let output
@@ -29,14 +28,14 @@ export default function (arguments_) {
     ? {
         format,
         preserveModules: false,
-        preserveModulesRoot: 'packages/core',
+        preserveModulesRoot: './packages/core',
         name: 'index',
         file: path.resolve(outDir, 'index.js'),
       }
     : {
         format,
         preserveModules: true,
-        preserveModulesRoot: 'packages/core',
+        preserveModulesRoot: './packages/core',
         dir: outDir,
       }
 
