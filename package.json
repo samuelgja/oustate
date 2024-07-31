@@ -1,6 +1,6 @@
 {
   "name": "oustate",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "author": "samuel.gjabel@gmail.com",
   "description": "👀 Another React state management library",
   "license": "MIT",
