@@ -17,8 +17,9 @@ outputs.main = 'cjs/index.js'
 outputs.module = 'esm/index.js'
 outputs.unpkg = 'umd/index.js'
 outputs.types = 'types/index.d.ts'
+outputs['react-native'] = 'src/index.ts'
 
-packageJson = { ...outputs, ...packageJson }
+packageJson = { ...packageJson, ...outputs }
 
 const libraryPath = path.resolve(rootDirectory, 'lib')
 const packageJsonPath = path.resolve(libraryPath, 'package.json')
