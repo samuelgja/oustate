@@ -10,15 +10,15 @@ describe('Basic state', () => {
 
   it('should set state & get state', () => {
     const state = createState({ count: 0 })
-    state.setState({ count: 1 })
-    expect(state.getState().count).toBe(1)
+    state.set({ count: 1 })
+    expect(state.get().count).toBe(1)
   })
   it('should get state in react hook and set state', () => {
     const state = createState({ count: 0 })
     const { result } = renderHook(() => useStateValue(state))
     expect(result.current.count).toBe(0)
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
     expect(result.current.count).toBe(1)
   })
@@ -28,13 +28,13 @@ describe('Basic state', () => {
     expect(result.current.hook.count).toBe(0)
     expect(result.current.renderCount).toBe(1)
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
     expect(result.current.hook.count).toBe(1)
     expect(result.current.renderCount).toBe(2)
 
     act(() => {
-      state.setState({ count: 2 })
+      state.set({ count: 2 })
     })
     expect(result.current.hook.count).toBe(2)
     expect(result.current.renderCount).toBe(3)
@@ -57,7 +57,7 @@ describe('Basic state', () => {
       results.push(renderIt())
     }
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
     for (let index = 0; index < results.length; index++) {
       expect(results[index].current.hook.count).toBe(1)
@@ -69,7 +69,7 @@ describe('Basic state', () => {
     expect(result.current.count).toBe(0)
     expect(result.current.anotherCount).toBe(0)
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
     expect(result.current.count).toBe(1)
     expect(result.current).toStrictEqual({ count: 1, anotherCount: 0, thirdCount: 0, someObject: { a: 1, b: 2, c: 3 } })
@@ -82,7 +82,7 @@ describe('Basic state', () => {
       expect(next.count).toBe(1)
     })
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
   })
 
@@ -95,7 +95,7 @@ describe('Basic state', () => {
     })
     unsubscribe()
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
   })
   it('should subscribe 100 listeners to the state and get result', () => {
@@ -107,7 +107,7 @@ describe('Basic state', () => {
       })
     }
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
   })
   it('should subscribe 100 listeners to the state and unsubscribe and get result', () => {
@@ -124,7 +124,7 @@ describe('Basic state', () => {
     }
     for (const callback of unsubscribe) callback()
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
   })
 })

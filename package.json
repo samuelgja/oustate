@@ -1,6 +1,6 @@
 {
   "name": "oustate",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "samuel.gjabel@gmail.com",
   "description": "👀 Another React state management library",
   "license": "MIT",
@@ -12,7 +12,7 @@
   "sideEffects": false,
   "scripts": {
     "ts:build": "tsc ",
-    "build": "concurrently -m 8 'bun run:build:*' && node scripts/copy-data.mjs",
+    "build": "bun run build:cjs && bun run build:esm && bun run build:umd && bun run build:types && node scripts/copy-data.mjs",
     "build:cjs": "rollup -c --bundleConfigAsCjs --format=cjs && rm -rf lib/cjs/node_modules && rm -rf lib/cjs/_virtual",
     "build:esm": "rollup -c --bundleConfigAsCjs --format=esm && rm -rf lib/esm/node_modules && rm -rf lib/esm/_virtual",
     "build:umd": "rollup -c --bundleConfigAsCjs --format=umd && rm -rf lib/umd/node_modules && rm -rf lib/umd/_virtual",

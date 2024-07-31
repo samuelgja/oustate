@@ -38,7 +38,7 @@ const App = () => {
   return (
     <div
       onClick={() =>
-        userState.setState((user) => {
+        userState.set((user) => {
           user.age++
           return { ...user }
         })
@@ -61,7 +61,7 @@ const App = () => {
   const userAge = useStateValue(userState, user => user.age) // return only user.age, so this component re-render only if user.age is changed.
     <div
       onClick={() =>
-        userState.setState((user) => {
+        userState.set((user) => {
           user.age++
           return { ...user }
         })
@@ -89,7 +89,7 @@ creating basic atom state - it can be almost any value - object / atom / ...
 ```typescript
 export interface StateOptions<T> {
   isSame?: IsSame<T>
-  onSet?: (oldValue: T, setStateCallback: () => T) => T
+  onSet?: (oldValue: T, setCallback: () => T) => T
 }
 /**
  * Creating of basic atom state.
@@ -112,17 +112,17 @@ const defaultState = 2
 const state = createState(defaultState, {
   // options are optional
   isSame: (prev, next) => true,
-  onSet(oldValue, setStateCallback) {
-    const newValue = setStateCallback()
+  onSet(oldValue, setCallback) {
+    const newValue = setCallback()
     console.log(oldValue, newValue)
   },
 })
 
 // get state out of react scope
-state.getState()
+state.get()
 
 // set new state
-state.setState(3)
+state.set(3)
 
 // use state in react scope
 const stateValue = useStateValue(state)
@@ -137,7 +137,7 @@ same as `createState` but instead of returning `AtomState`, it **returns functio
 ```typescript
 export interface StateOptions<T> {
   isSame?: IsSame<T>
-  onSet?: (oldValue: T, setStateCallback: () => T) => T
+  onSet?: (oldValue: T, setCallback: () => T) => T
 }
 /**
  * Create atom family state. It's same as createState but instead of return `AtomState` it returns `AtomFamily`.
@@ -158,18 +158,18 @@ const defaultState = 2
 const state = createStateFamily(defaultState, {
   // options are optional
   isSame: (prev, next) => true,
-  onSet(oldValue, setStateCallback) {
-    const newValue = setStateCallback()
+  onSet(oldValue, setCallback) {
+    const newValue = setCallback()
     console.log(oldValue, newValue)
     return newValue
   },
 })
 
 // get state out of react scope
-state('some-key').getState()
+state('some-key').get()
 
 // set new state
-state('some-key').setState(3)
+state('some-key').set(3)
 
 // use state in react scope
 const stateValue = useStateValue(state('some-key'))
@@ -212,7 +212,7 @@ const userState = createState({ name: 'John', age: 20 })
 // creating computed depends on counterState & userState
 const counterPlusUserAgeState = createComputed(({ get }) => get(counterState) + get(userState, (user) => user.age))
 // get state
-await counterPlusUserAgeState.getState()
+await counterPlusUserAgeState.get()
 
 // react scope
 const counterPlusUser = useStateValue(counterPlusUserAgeState)
@@ -235,7 +235,7 @@ const userState = createState({ name: 'John', age: 20 })
 // creating computed depends on counterState & userState
 const counterPlusUserAgeState = createComputedFamily(({ get }) => get(counterState) + get(userState, (user) => user.age))
 // get state
-await counterPlusUserAgeState('key').getState()
+await counterPlusUserAgeState('key').get()
 
 // react scope
 const counterPlusUser = useStateValue(counterPlusUserAgeState('key'))
@@ -257,7 +257,7 @@ const userState = createState({ name: 'John', age: 20 })
 
 const userAgeState = createSlice(userState, (user) => user.age)
 // get state
-await userAgeState.getState()
+await userAgeState.get()
 
 // react scope
 const counterPlusUser = useStateValue(userAgeState)

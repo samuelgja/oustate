@@ -9,7 +9,7 @@ describe('Basic state family', () => {
   })
   it("should create a state family and get it's state", () => {
     const state = createStateFamily({ count: 0 })
-    expect(state(2).getState().count).toBe(0)
+    expect(state(2).get().count).toBe(0)
   })
   it("should create a state family and get it's state in react hook", () => {
     const state = createStateFamily({ count: 0 })
@@ -22,7 +22,7 @@ describe('Basic state family', () => {
     expect(result.current.renderCount).toBe(1)
 
     act(() => {
-      state(2).setState({ count: 1 })
+      state(2).set({ count: 1 })
     })
     expect(result.current.renderCount).toBe(2)
   })
@@ -32,7 +32,7 @@ describe('Basic state family', () => {
     expect(result.current.renderCount).toBe(1)
 
     act(() => {
-      state(2).setState({ count: 1 })
+      state(2).set({ count: 1 })
     })
     expect(result.current.renderCount).toBe(1)
   })

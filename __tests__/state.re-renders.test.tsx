@@ -8,12 +8,12 @@ describe('Re-renders state', () => {
     const { result } = renderHookWithCount(() => useStateValue(state, (value) => value.anotherCount))
 
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
     expect(result.current.hook).toBe(0)
     expect(result.current.renderCount).toBe(1)
     act(() => {
-      state.setState((old) => ({ ...old, anotherCount: 100 }))
+      state.set((old) => ({ ...old, anotherCount: 100 }))
     })
     expect(result.current.renderCount).toBe(2)
   })
@@ -31,7 +31,7 @@ describe('Re-renders state', () => {
     const { result } = renderHookWithCount(() => useStateValue(state))
     expect(result.current.hook.count).toBe(0)
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
     // we blocked change via isSame - so value cannot be changed
     expect(result.current.hook.count).toBe(0)
@@ -51,7 +51,7 @@ describe('Re-renders state', () => {
     )
     expect(result.current.hook.count).toBe(0)
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
     // we blocked change via isSame - so value cannot be changed
     expect(result.current.hook.count).toBe(0)
@@ -61,7 +61,7 @@ describe('Re-renders state', () => {
     const countersState = createState({ counter1: 0, counter2: 0 })
 
     const incrementCounter1Action = () =>
-      countersState.setState((old) => {
+      countersState.set((old) => {
         old.counter1++
         return { ...old }
       })

@@ -15,7 +15,7 @@ describe('Basic Slice states', () => {
   it('should create state & create slice state from it and get value', async () => {
     const state = createState({ count: 0 })
     const slice = createSlice(state, (value) => value.count)
-    expect(await slice.getState()).toBe(0)
+    expect(await slice.get()).toBe(0)
   })
   it('should create state & create slice state from it and get value in react hook and re-render count should be 2', async () => {
     const state = createState({ count: 0 })
@@ -26,7 +26,7 @@ describe('Basic Slice states', () => {
     })
     expect(result.current.hook).toBe(0)
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
     await act(async () => {
       await awaiter(waitTime * 2)
@@ -44,7 +44,7 @@ describe('Basic Slice states', () => {
     })
     expect(result.current.hook).toBe(0)
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
     await act(async () => {
       await awaiter(waitTime * 2)
@@ -66,7 +66,7 @@ describe('Basic Slice states', () => {
       const { result } = renderHookWithCount(() => useStateValue(slices[index]))
       expect(result.current.renderCount).toBe(1)
       act(() => {
-        state.setState({ count: 1 })
+        state.set({ count: 1 })
       })
       expect(result.current.hook).toBe(1)
       if (index === 0) {

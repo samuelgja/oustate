@@ -2,8 +2,8 @@ import { createEmitter } from '../emitters/create-emitter'
 import { PromiseData, PromiseStatus } from '../types/computed-types'
 import {
   GetState,
-  SetState,
-  SetStateValue,
+  set,
+  setValue,
   StateInternal,
   StateKeys,
   StateOptions,
@@ -41,7 +41,7 @@ export const createState = <T>(
   type State = StateInternal<T>
   const { isSame, onSet } = options || {}
 
-  let getSetStateValue = (state: SetStateValue<State>): State => {
+  let getsetValue = (state: setValue<State>): State => {
     if (typeof state === 'function') {
       return (state as any)(data.cachedAwaited)
     }
@@ -53,7 +53,7 @@ export const createState = <T>(
   }
 
   if (onSet) {
-    getSetStateValue = (state: SetStateValue<State>): State => {
+    getsetValue = (state: setValue<State>): State => {
       if (typeof state === 'function') {
         return onSet(data.cachedAwaited, (draft) => {
           return (state as any)(draft)
@@ -79,7 +79,7 @@ export const createState = <T>(
     isResolving: false,
   }
 
-  const getState: GetState<State> = () => {
+  const get: GetState<State> = () => {
     return data.cachedAwaited
   }
 
@@ -88,15 +88,15 @@ export const createState = <T>(
     error: null,
     promises: [],
   }
-  const emitter = createEmitter<State>(getState)
-  const emitterInternal = createEmitter<State, State, SubscribeInternalParameters>(getState)
+  const emitter = createEmitter<State>(get)
+  const emitterInternal = createEmitter<State, State, SubscribeInternalParameters>(get)
   const subscribeEmitter = createEmitter<State, State, SubscribeParameters<State>>()
   const promiseEmitter = createEmitter<PromiseData>(() => promiseData)
 
-  const setState: SetState<State> = (stateValue) => {
+  const set: set<State> = (stateValue) => {
     const prev = data.cachedAwaited
 
-    const newState = getSetStateValue(stateValue)
+    const newState = getsetValue(stateValue)
 
     const isEqual = isSame?.(data.cachedAwaited, newState)
     if (isEqual) {
@@ -153,9 +153,9 @@ export const createState = <T>(
     __tag: undefined as State,
     id: id,
     is: StateKeys.IS_STATE,
-    getState: getState,
-    setState: setState,
-    clear: () => setState(defaultState),
+    get: get,
+    set: set,
+    clear: () => set(defaultState),
     subscribe: subscribeEmitter.subscribe,
     __internal: {
       getSnapshot: getInternalSnapshot,

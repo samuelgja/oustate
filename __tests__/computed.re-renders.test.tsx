@@ -21,7 +21,7 @@ describe('Basic Async Computed states', () => {
 
     expect(result.current.hook).toBe(0)
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
     await act(async () => {
       await awaiter(waitTime * 2)
@@ -43,7 +43,7 @@ describe('Basic Async Computed states', () => {
 
     expect(result.current.hook).toBe(0)
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
     await act(async () => {
       await awaiter(waitTime * 2)
@@ -70,7 +70,7 @@ describe('Basic Async Computed states', () => {
     expect(result.current.hook).toBe(0)
     expect(result.current.renderCount).toBe(1)
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
     await act(async () => {
       await awaiter(waitTime * 4)
@@ -95,7 +95,7 @@ describe('Basic Async Computed states', () => {
     expect(result.current.hook).toBe(0)
     expect(result.current.renderCount).toBe(1)
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
     await act(async () => {
       await awaiter(waitTime * 4)
@@ -114,10 +114,10 @@ describe('Basic Async Computed states', () => {
     )
 
     act(() => {
-      state.setState((old) => ({ ...old, count: old.count + 1 }))
+      state.set((old) => ({ ...old, count: old.count + 1 }))
     })
 
-    expect(await computed.getState()).toStrictEqual({ count: 1, someOtherValue: 0 })
+    expect(await computed.get()).toStrictEqual({ count: 1, someOtherValue: 0 })
   })
   it('should create computed state and block update via isSame', async () => {
     const state = createState({ count: 0, someOtherValue: 0 })
@@ -130,10 +130,10 @@ describe('Basic Async Computed states', () => {
     renderHookWithCount(() => useStateValue(computed))
 
     act(() => {
-      state.setState((old) => ({ ...old, count: old.count + 1 }))
+      state.set((old) => ({ ...old, count: old.count + 1 }))
     })
 
-    expect(await computed.getState()).toStrictEqual({ count: 0, someOtherValue: 0 })
+    expect(await computed.get()).toStrictEqual({ count: 0, someOtherValue: 0 })
   })
   it('should create computed state and block update (re-render) via isSame in react', () => {
     const state = createState({ count: 0, someOtherValue: 0 })
@@ -146,12 +146,12 @@ describe('Basic Async Computed states', () => {
     const { result } = renderHookWithCount(() => useStateValue(computed))
 
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
 
     expect(result.current.renderCount).toBe(1)
     act(() => {
-      state.setState((old) => ({ ...old, someOtherValue: 1 }))
+      state.set((old) => ({ ...old, someOtherValue: 1 }))
     })
 
     expect(result.current.renderCount).toBe(1)
@@ -169,12 +169,12 @@ describe('Basic Async Computed states', () => {
     const { result } = renderHookWithCount(() => useStateValue(computed))
 
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
 
     expect(result.current.renderCount).toBe(1)
     act(() => {
-      state.setState((old) => ({ ...old, someOtherValue: 1 }))
+      state.set((old) => ({ ...old, someOtherValue: 1 }))
     })
 
     expect(result.current.renderCount).toBe(1)
@@ -187,7 +187,7 @@ describe('Basic Async Computed states', () => {
     const { result } = renderHookWithCount(() => useStateValue(computed))
     expect(result.current.renderCount).toBe(1)
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
 
     expect(result.current.renderCount).toBe(1)
@@ -201,7 +201,7 @@ describe('Basic Async Computed states', () => {
     const { result } = renderHookWithCount(() => useStateValue(computed, (value) => value.someOtherValue))
     expect(result.current.renderCount).toBe(1)
     act(() => {
-      state.setState((old) => ({ ...old, count: 1 }))
+      state.set((old) => ({ ...old, count: 1 }))
     })
 
     expect(result.current.renderCount).toBe(1)
@@ -226,7 +226,7 @@ describe('Basic Async Computed states', () => {
       // here create 100 value updates - but it should wait for the first update to finish - because it returns promise.
       for (let index = 0; index < 100; index++) {
         await awaiter(waitTime / 2)
-        state.setState((old) => ({ ...old, count: old.count + 1 }))
+        state.set((old) => ({ ...old, count: old.count + 1 }))
       }
     })
 
@@ -234,12 +234,12 @@ describe('Basic Async Computed states', () => {
       await awaiter(waitTime * 6)
     })
     // so re-renders are minimal - just 3 times
-    // 1. was initial before `setState`
+    // 1. was initial before `set`
     // 2. when parent start resolving promise - start loader - if parent also received new data - it start resolving it again - so child will still wait for it
     // 3. when data are available - it will re-render
-    // if the data are sync - it will re-render 101 times. (next test) - 100 setState + 1 initial
+    // if the data are sync - it will re-render 101 times. (next test) - 100 set + 1 initial
     expect(result.current.renderCount).toBe(3)
-    expect(state.getState().count).toBe(100)
+    expect(state.get().count).toBe(100)
     expect(result.current.hook.count).toBe(100)
   })
 
@@ -257,11 +257,11 @@ describe('Basic Async Computed states', () => {
       // here create 100 value updates - but it should wait for the first update to finish - because it returns promise.
       for (let index = 0; index < 100; index++) {
         await awaiter(waitTime / 2)
-        state.setState((old) => ({ ...old, count: old.count + 1 }))
+        state.set((old) => ({ ...old, count: old.count + 1 }))
       }
     })
     expect(result.current.renderCount).toBe(101)
-    expect(state.getState().count).toBe(100)
+    expect(state.get().count).toBe(100)
     expect(result.current.hook.count).toBe(100)
   })
 })

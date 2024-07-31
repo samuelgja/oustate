@@ -61,11 +61,11 @@ export const createSyncState = <T>(options: CreateSyncStateOptions<T>): AtomStat
   const setPromiseStatus = state.__internal.__promiseSetter
   setPromiseStatus(PromiseStatus.PENDING)
   onSnapshot?.(async (snapshot) => {
-    const oldState = state.getState()
+    const oldState = state.get()
     if (isSame?.(oldState, snapshot) || oldState === snapshot) {
       return
     }
-    state.setState(snapshot)
+    state.set(snapshot)
     if (resolveOnLoad !== null) {
       state.__internal.resolvePromises(snapshot)
       setPromiseStatus(PromiseStatus.SUCCESS)
@@ -74,7 +74,7 @@ export const createSyncState = <T>(options: CreateSyncStateOptions<T>): AtomStat
     }
   })
   if (onLoad) {
-    state.setState(onLoad())
+    state.set(onLoad())
   }
 
   return state

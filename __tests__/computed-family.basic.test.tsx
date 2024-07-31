@@ -23,7 +23,7 @@ describe('Basic Computed family states', () => {
       return get(state, (value) => value.count)
     })
 
-    expect(await computed('key').getState()).toBe(0)
+    expect(await computed('key').get()).toBe(0)
   })
   it('should create computed family from state and get value in react hook', () => {
     const state = createState({ count: 0 })
@@ -42,7 +42,7 @@ describe('Basic Computed family states', () => {
     expect(result.current.renderCount).toBe(1)
 
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
     expect(result.current.renderCount).toBe(2)
   })
@@ -57,7 +57,7 @@ describe('Basic Computed family states', () => {
       expect(next).toBe(1)
     })
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
   })
 })

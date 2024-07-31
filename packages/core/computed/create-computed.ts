@@ -461,7 +461,7 @@ export const createComputed = <T>(
     __tag: undefined as AwaitedState,
     id: id,
     is: StateKeys.IS_COMPUTED,
-    getState: getPromiseData,
+    get: getPromiseData,
     subscribe: subscribeEmitter.subscribe,
     clear,
     __internal: {

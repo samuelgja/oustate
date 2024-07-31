@@ -38,7 +38,7 @@ export const createFamily = <S extends StateInternal<unknown>, P extends CommonF
     }
   }
 
-  const getState = (key: Key) => {
+  const get = (key: Key) => {
     const state = getFamily(family, key)
     return state
   }
@@ -49,9 +49,9 @@ export const createFamily = <S extends StateInternal<unknown>, P extends CommonF
     }
     family.clear()
   }
-  getState.subscribe = subscribe
-  getState.clear = clear
-  getState.id = id
+  get.subscribe = subscribe
+  get.clear = clear
+  get.id = id
 
-  return getState
+  return get
 }

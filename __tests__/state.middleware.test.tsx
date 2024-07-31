@@ -16,7 +16,7 @@ describe('Basic state', () => {
 
     act(() => {
       // don't need to be wrapped into the new object reference - because of immer
-      state.setState((old) => {
+      state.set((old) => {
         old.count++
         old.nestedValue.value = 100
         return old
@@ -38,7 +38,7 @@ describe('Basic state', () => {
 
     act(() => {
       // don't need to be wrapped into the new object reference - because of immer
-      state.setState({ count: 1, nestedValue: { value: 100 } })
+      state.set({ count: 1, nestedValue: { value: 100 } })
     })
     expect(result.current.hook.count).toBe(1)
     expect(result.current.hook.nestedValue.value).toBe(100)

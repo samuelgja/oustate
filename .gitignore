@@ -20,6 +20,7 @@ dist/
 lib-cov
 lib
 dist
+.npmrc
 
 # Coverage directory used by tools like istanbul
 coverage

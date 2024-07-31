@@ -20,7 +20,7 @@ describe('Nested Computed states', () => {
     const nestedComputed = createComputed(({ get }) => {
       return get(computed, (value) => value)
     })
-    expect(await nestedComputed.getState()).toBe(0)
+    expect(await nestedComputed.get()).toBe(0)
   })
   it('should create computed and nested computed state from state and get value in react hook', () => {
     const state = createState({ count: 0 })
@@ -34,7 +34,7 @@ describe('Nested Computed states', () => {
     expect(result.current).toBe(0)
 
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
     expect(result.current).toBe(1)
   })
@@ -53,7 +53,7 @@ describe('Nested Computed states', () => {
     const { result } = renderHook(() => useStateValue(nestedComputed[99]))
     expect(result.current).toBe(0)
     act(() => {
-      state.setState({ count: 1 })
+      state.set({ count: 1 })
     })
     expect(result.current).toBe(1)
   })

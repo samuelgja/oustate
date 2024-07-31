@@ -4,18 +4,18 @@ import React, { useRef } from 'react'
 const countersState = createState({ counter1: 0, counter2: 0 })
 
 const incrementCounter1Action = () =>
-  countersState.setState((old) => {
+  countersState.set((old) => {
     old.counter1++
     return { ...old }
   })
 const incrementCounter2Action = () =>
-  countersState.setState((old) => {
+  countersState.set((old) => {
     old.counter2++
     return { ...old }
   })
 
 const incrementAll = () =>
-  countersState.setState((old) => {
+  countersState.set((old) => {
     old.counter1++
     old.counter2++
     return { ...old }
@@ -59,7 +59,7 @@ export default function App() {
       className="App"
       // eslint-disable-next-line react/jsx-no-bind
       onClick={() => {
-        simpleState.setState((old) => {
+        simpleState.set((old) => {
           old++
           return old
         })
