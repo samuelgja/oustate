@@ -13,10 +13,10 @@ delete packageJson.scripts
 delete packageJson.main
 
 const outputs = {}
-outputs.main = 'cjs/index.js'
-outputs.module = 'esm/index.js'
-outputs.unpkg = 'umd/index.js'
-outputs.types = 'types/index.d.ts'
+outputs.main = './cjs/index.js'
+outputs.module = './esm/index.js'
+outputs.unpkg = './umd/index.js'
+outputs.types = './types/index.d.ts'
 outputs['react-native'] = 'src/index.ts'
 
 packageJson = { ...packageJson, ...outputs }
