@@ -1,8 +1,7 @@
-import { isPromise } from 'node:util/types'
 import { createEmitter } from './create-emitter'
 import type { SetValue, StateOptions, StateSetter, StateDataInternal, StateGetter, IsEqual, StateBase } from './types'
 import { isSetValueFunction, StateKeys } from './types'
-import { getId } from './common'
+import { getId, isPromise } from './common'
 import { useStateValue } from './use-state-value'
 
 /**
