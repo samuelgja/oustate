@@ -95,6 +95,31 @@ describe('state', () => {
     expect(result.result.current).toEqual({ count: 100 })
   })
 
+  it('should render state with get', async () => {
+    let wasCalled = false
+    const get = () => {
+      wasCalled = true
+      return { count: 100 }
+    }
+    const appState = state(get)
+    expect(wasCalled).toEqual(false)
+    appState.get()
+    expect(wasCalled).toEqual(true)
+  })
+  it('should render state with get hook', async () => {
+    let wasCalled = false
+    const get = () => {
+      wasCalled = true
+      return { count: 100 }
+    }
+    const appState = state(get)
+    expect(wasCalled).toEqual(false)
+    renderHook(() => {
+      appState()
+    })
+    expect(wasCalled).toEqual(true)
+  })
+
   it('should render state with promise with suspense', async () => {
     const promise = Promise.resolve({ count: 100 })
     const appState = state(promise)

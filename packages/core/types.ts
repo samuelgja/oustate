@@ -34,14 +34,9 @@ export type Set<T> = (state: SetValue<T>) => void
  * Getting state value function.
  */
 export type GetState<T> = () => T
-
+export type DefaultState<T> = T | (() => T)
 export interface StateDataInternal<T = unknown> {
-  cached: T
-  isAsync?: boolean
-  isDead?: boolean
-  isResolving?: boolean
-  isResolvingStateId?: Key
-  isInitialized: boolean
+  value?: T
   updateVersion: number
 }
 

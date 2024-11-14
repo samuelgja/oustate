@@ -25,45 +25,58 @@ import { useStateValue } from './use-state-value'
  */
 
 type DefaultState<T> = T | (() => T)
-export function state<T>(value: DefaultState<T>, options?: StateOptions<T>): StateSetter<Awaited<T>> {
+export function state<T>(initValue: DefaultState<T>, options?: StateOptions<T>): StateSetter<Awaited<T>> {
   const id = getId()
   const { onSet, isEqual } = options || {}
 
-  function getDefaultState() {
-    if (isPromise(value)) {
-      return value
+  function getDefaultStateValue() {
+    if (isPromise(initValue)) {
+      return initValue
     }
-    if (isFunction(value)) {
-      return (value as () => T)()
+    if (isFunction(initValue)) {
+      return (initValue as () => T)()
     }
-    return value
+    return initValue
   }
-  function getSetValue(stateSetter: SetValue<T>): T {
+
+  function resolveSetter(value: T, stateSetter: SetValue<T>): T {
     if (isSetValueFunction(stateSetter)) {
-      return stateSetter(stateData.cached)
+      return stateSetter(value)
     }
     return stateSetter
   }
 
   const stateData: StateDataInternal<T> = {
     updateVersion: 0,
-    cached: getDefaultState(),
-    isInitialized: true,
-    isResolving: false,
+    value: undefined,
   }
 
-  function get() {
-    return stateData.cached
+  function getValue(): T {
+    if (stateData.value === undefined) {
+      stateData.value = getDefaultStateValue()
+    }
+    return stateData.value
+  }
+  function get(): T {
+    const stateValue = getValue()
+    if (isPromise(stateValue)) {
+      stateValue.then((data) => {
+        stateData.value = data as Awaited<T>
+        emitter.emit()
+      })
+    }
+    return stateValue
   }
 
   function set(stateValue: SetValue<T>) {
-    const newState = getSetValue(stateValue)
-    const isEqualResult = isEqual?.(stateData.cached, newState)
-    if (isEqualResult || newState === stateData.cached) {
+    const stateValueData = getValue()
+    const newState = resolveSetter(stateValueData, stateValue)
+    const isEqualResult = isEqual?.(stateValueData, newState)
+    if (isEqualResult || newState === stateValueData) {
       return
     }
     stateData.updateVersion++
-    stateData.cached = newState
+    stateData.value = newState
     if (onSet) {
       onSet(newState)
     }
@@ -78,8 +91,7 @@ export function state<T>(value: DefaultState<T>, options?: StateOptions<T>): Sta
     is: StateKeys.IS_STATE,
     get,
     reset() {
-      // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
-      const value = getDefaultState()
+      const value = getDefaultStateValue()
       if (isPromise(value)) {
         value.then((data) => {
           set(data as T)
@@ -100,14 +112,6 @@ export function state<T>(value: DefaultState<T>, options?: StateOptions<T>): Sta
       emitter,
       // stateData,
     },
-  }
-
-  if (isPromise(stateData.cached)) {
-    stateData.isAsync = true
-    stateData.cached.then((data) => {
-      stateData.cached = data as Awaited<T>
-      emitter.emit()
-    })
   }
 
   // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
