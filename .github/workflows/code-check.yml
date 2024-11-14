@@ -1,4 +1,4 @@
-name: Code Check with Bun
+name: Code Check
 
 on:
   push:
