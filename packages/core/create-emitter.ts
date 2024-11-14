@@ -2,7 +2,7 @@ export type EmitterSubscribe<P = undefined> = (listener: (...params: P[]) => voi
 export interface Emitter<T, R = T, P = undefined> {
   subscribe: EmitterSubscribe<P>
   getSnapshot?: () => R
-  getServerSnapshot?: undefined | null | (() => R)
+  getServerSnapshot: undefined | null | (() => R)
   emit: (...params: P[]) => void
   getSize: () => number
 }
