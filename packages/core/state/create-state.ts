@@ -1,4 +1,6 @@
+import { createSlice } from '../computed/create-slice'
 import { createEmitter } from '../emitters/create-emitter'
+import { useStateValue } from '../hooks'
 import { PromiseData, PromiseStatus } from '../types/computed-types'
 import {
   GetState,
@@ -41,7 +43,7 @@ export const createState = <T>(
   type State = StateInternal<T>
   const { isSame, onSet } = options || {}
 
-  let getsetValue = (state: setValue<State>): State => {
+  let getSetValue = (state: setValue<State>): State => {
     if (typeof state === 'function') {
       return (state as any)(data.cachedAwaited)
     }
@@ -53,7 +55,7 @@ export const createState = <T>(
   }
 
   if (onSet) {
-    getsetValue = (state: setValue<State>): State => {
+    getSetValue = (state: setValue<State>): State => {
       if (typeof state === 'function') {
         return onSet(data.cachedAwaited, (draft) => {
           return (state as any)(draft)
@@ -96,7 +98,7 @@ export const createState = <T>(
   const set: set<State> = (stateValue) => {
     const prev = data.cachedAwaited
 
-    const newState = getsetValue(stateValue)
+    const newState = getSetValue(stateValue)
 
     const isEqual = isSame?.(data.cachedAwaited, newState)
     if (isEqual) {
@@ -156,6 +158,12 @@ export const createState = <T>(
     get: get,
     set: set,
     clear: () => set(defaultState),
+    slice(selector, isSame) {
+      return createSlice(this, selector, isSame)
+    },
+    asHook() {
+      return (selector, isEqual) => useStateValue(this, selector, isEqual)
+    },
     subscribe: subscribeEmitter.subscribe,
     __internal: {
       getSnapshot: getInternalSnapshot,

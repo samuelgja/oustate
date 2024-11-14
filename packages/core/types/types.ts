@@ -139,6 +139,10 @@ export interface AtomState<T> extends CommonFunctions<T> {
    * State identifier
    */
   is: StateKeys.IS_STATE | StateKeys.IS_STATE_FAMILY
+
+  slice: <S>(selector: (value: T) => S, isSame?: IsSame<S>) => ComputedState<StateInternal<S>>
+
+  asHook: () => <S>(selector?: (state: T) => S, isEqual?: IsSame<S>) => StateValue<T, S>
   /**
    * Internal state data
    */

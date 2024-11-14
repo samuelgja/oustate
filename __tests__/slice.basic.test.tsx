@@ -12,10 +12,21 @@ describe('Basic Slice states', () => {
     const slice = createSlice(state, (value) => value.count)
     expect(slice).toBeDefined()
   })
+  it('should create state & create slice state from it', async () => {
+    const state = createState({ count: 0 })
+    const slice = state.slice((value) => value.count)
+    expect(slice).toBeDefined()
+  })
   it('should create state & create slice state from it and get value', async () => {
     const state = createState({ count: 0 })
     const slice = createSlice(state, (value) => value.count)
     expect(await slice.get()).toBe(0)
+  })
+
+  it('should create state & create slice state from it and get value', async () => {
+    const state = createState({ count: 10 })
+    const slice = state.slice((value) => value.count)
+    expect(await slice.get()).toBe(10)
   })
   it('should create state & create slice state from it and get value in react hook and re-render count should be 2', async () => {
     const state = createState({ count: 0 })

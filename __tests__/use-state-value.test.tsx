@@ -8,6 +8,19 @@ describe('UseStateValue tests', () => {
     const { result } = renderHookWithCount(() => useStateValue(state))
     expect(result.current.hook).toBe(0)
   })
+
+  it("should return state's value with as hook", () => {
+    const state = createState(10)
+    const useState = state.asHook()
+    const { result } = renderHookWithCount(() => useState())
+    expect(result.current.hook).toBe(10)
+  })
+  it("should return state's value with as with slice", () => {
+    const state = createState({ value: 10 })
+    const useState = state.asHook()
+    const { result } = renderHookWithCount(() => useState((state) => state.value))
+    expect(result.current.hook).toBe(10)
+  })
   it('should return state value from complex object', () => {
     const state = createState({ count: 0, anotherCount: 0 })
     const { result } = renderHookWithCount(() => useStateValue(state))
