@@ -143,6 +143,7 @@ export interface AtomState<T> extends CommonFunctions<T> {
   slice: <S>(selector: (value: T) => S, isSame?: IsSame<S>) => ComputedState<StateInternal<S>>
 
   asHook: () => <S>(selector?: (state: T) => S, isEqual?: IsSame<S>) => StateValue<T, S>
+
   /**
    * Internal state data
    */
@@ -167,6 +168,8 @@ export interface ComputedState<T> extends CommonFunctions<T> {
    * Get computed state value - it always return promise - either computed is not promise.
    */
   get: GetState<Promise<T>>
+  slice: <S>(selector: (value: T) => S, isSame?: IsSame<S>) => ComputedState<StateInternal<S>>
+  asHook: () => <S>(selector?: (state: T) => S, isEqual?: IsSame<S>) => StateValue<T, S>
   /**
    * Computed unique identifier
    */

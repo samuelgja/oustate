@@ -25,6 +25,8 @@ import {
 import { computedSubscribe } from './computed-subscribe'
 import { createAbortController } from '../utils/create-abort-controller'
 import { clearComputedData, clearComputedPromiseData } from '../utils/computed-clears'
+import { useStateValue } from '../hooks'
+import { createSlice } from './create-slice'
 
 const isThrow = (message: unknown) => {
   const promise = toType<InternalThrow>(message)
@@ -463,6 +465,12 @@ export const createComputed = <T>(
     is: StateKeys.IS_COMPUTED,
     get: getPromiseData,
     subscribe: subscribeEmitter.subscribe,
+    slice(selector, isSame) {
+      return createSlice(this, selector, isSame)
+    },
+    asHook() {
+      return (selector, isEqual) => useStateValue(this, selector, isEqual)
+    },
     clear,
     __internal: {
       getSnapshot: getInternalSnapshot,
