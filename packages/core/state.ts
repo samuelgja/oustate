@@ -23,9 +23,11 @@ import { useStateValue } from './use-state-value'
  * const userAge = userState.slice((state) => state.age)();
  * ```
  */
+
+type DefaultState<T> = T | Promise<T>
 export function state<T>(defaultState: T, options?: StateOptions<T>): StateSetter<T> {
   const id = getId()
-  const { onSet, onInit, isEqual } = options || {}
+  const { onSet, isEqual } = options || {}
 
   function getSetValue(stateSetter: SetValue<T>): T {
     if (isSetValueFunction(stateSetter)) {
@@ -57,16 +59,6 @@ export function state<T>(defaultState: T, options?: StateOptions<T>): StateSette
       onSet(newState)
     }
     emitter.emit()
-  }
-
-  if (onInit) {
-    if (isPromise(onInit)) {
-      onInit.then((result) => {
-        set(result as T)
-      })
-    } else {
-      set(onInit)
-    }
   }
 
   const emitter = createEmitter<T>(get)

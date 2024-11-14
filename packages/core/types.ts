@@ -12,7 +12,6 @@ export type IsEqual<T = unknown> = (a: T, b: T) => boolean
 export interface StateOptions<T> {
   isEqual?: IsEqual<T>
   onSet?: (newValue: T) => void
-  onInit?: () => T
 }
 
 type Setter<T> = (value: T) => T

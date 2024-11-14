@@ -7,6 +7,21 @@ describe('state', () => {
     const appState = state({ count: 0 })
     expect(appState.get()).toEqual({ count: 0 })
   })
+
+  it('should render state with on init', () => {
+    const appState = state({ count: 0 })
+    const renderCount = { current: 0 }
+    // const
+
+    const result = renderHook(() => {
+      renderCount.current++
+      return appState()
+    })
+    expect(result.result.current).toEqual({ count: 100 })
+    // count rendered
+    expect(renderCount.current).toEqual(1)
+  })
+
   it('should render state', () => {
     const appState = state({ count: 0 })
     const renderCount = { current: 0 }
@@ -17,6 +32,21 @@ describe('state', () => {
       return appState()
     })
     expect(result.result.current).toEqual({ count: 0 })
+    // count rendered
+    expect(renderCount.current).toEqual(1)
+  })
+
+  it('should render state', () => {
+    const appState = state({ count: 0 })
+    const slice = appState.select((slice) => slice.count)
+    const renderCount = { current: 0 }
+    // const
+
+    const result = renderHook(() => {
+      renderCount.current++
+      return slice()
+    })
+    expect(result.result.current).toEqual(0)
     // count rendered
     expect(renderCount.current).toEqual(1)
   })
