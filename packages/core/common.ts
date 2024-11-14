@@ -1,4 +1,4 @@
-import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector'
+import { useSyncExternalStoreWithSelector as useSync } from 'use-sync-external-store/shim/with-selector'
 import type { Emitter } from './create-emitter'
 import type { IsEqual } from './types'
 
@@ -9,19 +9,19 @@ export function toType<T>(object?: unknown): T {
   return object as T
 }
 
-export const syncExternalStore = <T, S>(
+export const useSyncExternalStore = <T, S>(
   emitter: Emitter<T>,
-  selector: (stateValue: T) => S = (stateValue) => toType<S>(stateValue),
+  selector: (stateValue: T) => S,
   isEqual?: IsEqual<S>,
 ): undefined extends S ? T : S => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  return useSyncExternalStoreWithSelector<T, S>(
+  const store = useSync<T, S>(
     emitter.subscribe,
     emitter.getSnapshot!,
     emitter.getServerSnapshot,
-    selector,
+    selector ? (stateValue) => selector(stateValue) : toType,
     isEqual,
   ) as undefined extends S ? T : S
+  return store
 }
 
 let id = 0

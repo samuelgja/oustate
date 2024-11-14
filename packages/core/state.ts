@@ -6,20 +6,22 @@ import { getId } from './common'
 import { useStateValue } from './use-state-value'
 
 /**
- * Creating of basic atom state.
- * @param defaultState - any value
- * @param options - optional options for state (isSame, onSet)
- * @returns AtomState
- * @example ```typescript
- * // global scope
- * const counterState = createState(0)
- * const userState = createState({ name: 'John', age: 20 })
+ * Creates a basic atom state.
+ * @param defaultState - The initial state value.
+ * @param options - Optional settings for the state (e.g., isEqual, onSet).
+ * @returns A state object that can be used as a hook and provides state management methods.
+ * @example
+ * ```typescript
+ * // Global scope
+ * const counterState = state(0);
+ * const userState = state({ name: 'John', age: 20 });
  *
- * // react scope
- * const counter = useStateValue(counterState)
- * const user = useStateValue(userState)
- * // when need just partial data from state, it can be sliced (slice don't need to be memoized - check docs)
- * const userAge = useStateValue(userState, (state) => state.age) // this will help to avoid unnecessary re-renders
+ * // React component
+ * const counter = counterState(); // Use as a hook
+ * const user = userState();
+ *
+ * // Access partial data from the state using slice
+ * const userAge = userState.slice((state) => state.age)();
  * ```
  */
 export function state<T>(defaultState: T, options?: StateOptions<T>): StateSetter<T> {
@@ -78,8 +80,8 @@ export function state<T>(defaultState: T, options?: StateOptions<T>): StateSette
     reset() {
       set(defaultState)
     },
-    slice(selector, isSame) {
-      const sliceState = slice(useSliceState, selector, isSame)
+    select(selector, isSame) {
+      const sliceState = select(useSliceState, selector, isSame)
       emitter.subscribe(() => {
         sliceState.__internal.emitter.emit()
       })
@@ -88,11 +90,13 @@ export function state<T>(defaultState: T, options?: StateOptions<T>): StateSette
 
     __internal: {
       emitter,
+      // stateData,
     },
   }
 
-  const useSliceState: StateSetter<T> = (useSelector, isEqualHook) => {
-    return useStateValue(useSliceState, useSelector, isEqualHook)
+  // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
+  const useSliceState: StateSetter<T> = <S>(selector?: (state: T) => S, isEqual?: IsEqual<S>) => {
+    return useStateValue(useSliceState, selector, isEqual)
   }
   useSliceState.set = set
   useSliceState.__internal = stateBase.__internal
@@ -101,13 +105,20 @@ export function state<T>(defaultState: T, options?: StateOptions<T>): StateSette
   useSliceState.id = stateBase.id
   useSliceState.get = stateBase.get
   useSliceState.reset = stateBase.reset
-  useSliceState.slice = stateBase.slice
+  useSliceState.select = stateBase.select
 
   return useSliceState
 }
 
-// eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
-export function slice<T, S>(state: StateGetter<T>, selector: (value: T) => S, isEqual: IsEqual<S> = () => false): StateGetter<S> {
+/**
+ * Select a slice of state.
+ */
+export function select<T, S>(
+  // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
+  state: StateGetter<T>,
+  selector: (value: T) => S,
+  isEqual: IsEqual<S> = () => false,
+): StateGetter<S> {
   let previousData: S | undefined
   const emitter = createEmitter(() => {
     const data = selector(state.get())
@@ -127,8 +138,8 @@ export function slice<T, S>(state: StateGetter<T>, selector: (value: T) => S, is
     get: () => selector(state.get()),
     id: getId(),
     is: StateKeys.IS_SLICE,
-    slice(sliceSelector, isSame) {
-      const sliceState = slice(useSliceState, sliceSelector, isSame)
+    select(sliceSelector, isSame) {
+      const sliceState = select(useSliceState, sliceSelector, isSame)
       emitter.subscribe(() => {
         sliceState.__internal.emitter.emit()
       })
@@ -145,6 +156,6 @@ export function slice<T, S>(state: StateGetter<T>, selector: (value: T) => S, is
   useSliceState.id = stateBase.id
   useSliceState.get = stateBase.get
   useSliceState.reset = stateBase.reset
-  useSliceState.slice = stateBase.slice
+  useSliceState.select = stateBase.select
   return useSliceState
 }

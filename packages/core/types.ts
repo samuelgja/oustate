@@ -75,7 +75,7 @@ export interface StateBase<T> {
    */
   id: Key
 
-  slice: <S>(selector: (value: T) => S, isEqual?: IsEqual<S>) => StateGetter<S>
+  select: <S>(selector: (value: T) => S, isEqual?: IsEqual<S>) => StateGetter<S>
 
   /**
    * Internal state data
@@ -87,7 +87,7 @@ export interface StateBase<T> {
 
 export interface StateGetter<T> extends StateBase<T> {
   // use use as the function call here
-  <S>(selector?: (state: T) => S, isEqual?: IsEqual<T>): StateValue<T, S>
+  <S>(selector?: (state: T) => S, isEqual?: IsEqual<S>): StateValue<T, S>
 }
 export interface StateSetter<T> extends StateGetter<T> {
   /**
