@@ -1,8 +1,8 @@
 export type EmitterSubscribe<P = undefined> = (listener: (...params: P[]) => void) => () => void
 export interface Emitter<T, R = T, P = undefined> {
   subscribe: EmitterSubscribe<P>
-  getSnapshot?: () => R
-  getServerSnapshot?: undefined | null | (() => R)
+  getSnapshot: () => R
+  getServerSnapshot: undefined | null | (() => R)
   emit: (...params: P[]) => void
   getSize: () => number
 }
@@ -11,7 +11,7 @@ export interface Emitter<T, R = T, P = undefined> {
 // R - snapshot return type
 // P - listener additional params type
 
-export const createEmitter = <T, R = T, P = undefined>(getSnapshot?: () => R): Emitter<T, R, P> => {
+export const createEmitter = <T, R = T, P = undefined>(getSnapshot: () => R): Emitter<T, R, P> => {
   const listeners: Set<(...params: P[]) => void> = new Set()
   return {
     subscribe: (listener) => {

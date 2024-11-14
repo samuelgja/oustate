@@ -4,7 +4,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import { terser } from 'rollup-plugin-terser'
 import replace from '@rollup/plugin-replace'
-import path from 'path'
+import path from 'node:path'
 
 const outFolder = 'lib'
 function external(id) {
@@ -59,7 +59,6 @@ export default function (arguments_) {
   return {
     input: ['./packages/core/index.ts'],
     output,
-    external,
     plugins: [
       replacer,
       resolver,

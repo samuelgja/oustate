@@ -1,6 +1,7 @@
+// eslint-disable-next-line depend/ban-dependencies
 import fs from 'fs-extra'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const rootDirectory = path.resolve(__dirname, '..')
@@ -23,7 +24,7 @@ packageJson = { ...packageJson, ...outputs }
 
 const libraryPath = path.resolve(rootDirectory, 'lib')
 const packageJsonPath = path.resolve(libraryPath, 'package.json')
-fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
+fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, undefined, 2))
 
 // also copy readme file
 const readmePath = path.resolve(rootDirectory, 'README.md')
