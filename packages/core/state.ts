@@ -1,7 +1,7 @@
 import { createEmitter } from './create-emitter'
 import type { SetValue, StateOptions, StateSetter, StateDataInternal, StateGetter, IsEqual, StateBase } from './types'
 import { isSetValueFunction, StateKeys } from './types'
-import { getId, isPromise } from './common'
+import { getId, isFunction, isPromise } from './common'
 import { useStateValue } from './use-state-value'
 
 /**
@@ -24,11 +24,20 @@ import { useStateValue } from './use-state-value'
  * ```
  */
 
-type DefaultState<T> = T | Promise<T>
-export function state<T>(defaultState: T, options?: StateOptions<T>): StateSetter<T> {
+type DefaultState<T> = T | (() => T)
+export function state<T>(value: DefaultState<T>, options?: StateOptions<T>): StateSetter<Awaited<T>> {
   const id = getId()
   const { onSet, isEqual } = options || {}
 
+  function getDefaultState() {
+    if (isPromise(value)) {
+      return value
+    }
+    if (isFunction(value)) {
+      return (value as () => T)()
+    }
+    return value
+  }
   function getSetValue(stateSetter: SetValue<T>): T {
     if (isSetValueFunction(stateSetter)) {
       return stateSetter(stateData.cached)
@@ -38,7 +47,7 @@ export function state<T>(defaultState: T, options?: StateOptions<T>): StateSette
 
   const stateData: StateDataInternal<T> = {
     updateVersion: 0,
-    cached: defaultState,
+    cached: getDefaultState(),
     isInitialized: true,
     isResolving: false,
   }
@@ -69,7 +78,15 @@ export function state<T>(defaultState: T, options?: StateOptions<T>): StateSette
     is: StateKeys.IS_STATE,
     get,
     reset() {
-      set(defaultState)
+      // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
+      const value = getDefaultState()
+      if (isPromise(value)) {
+        value.then((data) => {
+          set(data as T)
+        })
+        return
+      }
+      set(value)
     },
     select(selector, isSame) {
       const sliceState = select(useSliceState, selector, isSame)
@@ -85,6 +102,14 @@ export function state<T>(defaultState: T, options?: StateOptions<T>): StateSette
     },
   }
 
+  if (isPromise(stateData.cached)) {
+    stateData.isAsync = true
+    stateData.cached.then((data) => {
+      stateData.cached = data as Awaited<T>
+      emitter.emit()
+    })
+  }
+
   // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
   const useSliceState: StateSetter<T> = <S>(selector?: (state: T) => S, isEqual?: IsEqual<S>) => {
     return useStateValue(useSliceState, selector, isEqual)
@@ -98,7 +123,7 @@ export function state<T>(defaultState: T, options?: StateOptions<T>): StateSette
   useSliceState.reset = stateBase.reset
   useSliceState.select = stateBase.select
 
-  return useSliceState
+  return useSliceState as StateSetter<Awaited<T>>
 }
 
 /**

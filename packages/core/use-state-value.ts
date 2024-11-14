@@ -1,5 +1,5 @@
 import type { IsEqual, State } from './types'
-import { useSyncExternalStore, toType } from './common'
+import { useSyncExternalStore, toType, isPromise } from './common'
 
 /**
  * useCachedStateValue Hook.
@@ -21,5 +21,8 @@ export const useStateValue = <T, S>(
     },
     isEqual,
   )
+  if (isPromise(data)) {
+    throw data
+  }
   return data
 }

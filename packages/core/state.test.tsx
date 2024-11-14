@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-shadow */
+import { Suspense } from 'react'
 import { state } from './state'
-import { renderHook, act } from '@testing-library/react'
+import { renderHook, act, waitFor, render, screen } from '@testing-library/react'
 describe('state', () => {
   it('should test state', () => {
     const appState = state({ count: 0 })
     expect(appState.get()).toEqual({ count: 0 })
   })
 
-  it('should render state with on init', () => {
-    const appState = state({ count: 0 })
+  it('should render state with promise hook', async () => {
+    const promise = Promise.resolve({ count: 100 })
+    const appState = state(promise)
     const renderCount = { current: 0 }
     // const
 
@@ -17,9 +19,111 @@ describe('state', () => {
       renderCount.current++
       return appState()
     })
+    // wait for the promise to be resolved
+    await waitFor(() => {})
     expect(result.result.current).toEqual({ count: 100 })
     // count rendered
-    expect(renderCount.current).toEqual(1)
+    expect(renderCount.current).toEqual(2)
+    expect(appState.get()).toEqual({ count: 100 })
+  })
+
+  it('should render state with get promise hook', async () => {
+    // eslint-disable-next-line unicorn/consistent-function-scoping
+    const getPromise = () => Promise.resolve({ count: 100 })
+    const appState = state(getPromise)
+    const renderCount = { current: 0 }
+    // const
+
+    const result = renderHook(() => {
+      renderCount.current++
+      return appState()
+    })
+    // wait for the promise to be resolved
+    await waitFor(() => {})
+    act(() => {
+      appState.set({ count: 15 })
+    })
+    expect(result.result.current).toEqual({ count: 15 })
+    // count rendered
+    expect(renderCount.current).toEqual(3)
+    expect(appState.get()).toEqual({ count: 15 })
+  })
+
+  it('should render state with get promise check default', async () => {
+    // eslint-disable-next-line unicorn/consistent-function-scoping
+    const getPromise = () => Promise.resolve({ count: 100 })
+    const appState = state(getPromise)
+    // const
+
+    // wait for the promise to be resolved
+    await waitFor(() => {})
+    act(() => {
+      appState.set({ count: 15 })
+    })
+    expect(appState.get()).toEqual({ count: 15 })
+    // count rendered
+    act(() => {
+      appState.reset()
+    })
+    expect(appState.get()).toEqual({ count: 15 })
+  })
+
+  it('should render state with get hook', async () => {
+    // eslint-disable-next-line unicorn/consistent-function-scoping
+    const get = () => ({ count: 100 })
+    const appState = state(get)
+    const renderCount = { current: 0 }
+    // const
+
+    const result = renderHook(() => {
+      renderCount.current++
+      return appState()
+    })
+    // wait for the promise to be resolved
+    await waitFor(() => {})
+    act(() => {
+      appState.set({ count: 15 })
+    })
+    expect(result.result.current).toEqual({ count: 15 })
+    // count rendered
+    expect(renderCount.current).toEqual(2)
+    expect(appState.get()).toEqual({ count: 15 })
+
+    act(() => {
+      appState.reset()
+    })
+    expect(result.result.current).toEqual({ count: 100 })
+  })
+
+  it('should render state with promise with suspense', async () => {
+    const promise = Promise.resolve({ count: 100 })
+    const appState = state(promise)
+    const renderCount = { current: 0 }
+
+    const MockedComponent = jest.fn(() => <div>loading</div>)
+    const MockedComponentAfterSuspense = jest.fn(() => <div>loaded</div>)
+    // const
+    function Component() {
+      renderCount.current++
+      return (
+        <div>
+          {appState().count}
+          <MockedComponentAfterSuspense />
+        </div>
+      )
+    }
+    render(
+      <Suspense fallback={<MockedComponent />}>
+        <Component />
+      </Suspense>,
+    )
+    expect(MockedComponent).toHaveBeenCalledTimes(1)
+    expect(MockedComponentAfterSuspense).toHaveBeenCalledTimes(0)
+    await waitFor(() => {
+      return screen.getByText('100')
+    })
+    expect(MockedComponent).toHaveBeenCalledTimes(1)
+    expect(MockedComponentAfterSuspense).toHaveBeenCalledTimes(1)
   })
 
   it('should render state', () => {
