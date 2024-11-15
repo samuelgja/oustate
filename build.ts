@@ -68,3 +68,10 @@ await fs.copyFile('README.md', path.join(outDir, 'README.md'))
 
 // Copy LICENSE
 await fs.copyFile('LICENSE', path.join(outDir, 'LICENSE'))
+
+// Check also .npmrc if exist, if so copy it
+try {
+  await fs.copyFile('.npmrc', path.join(outDir, '.npmrc'))
+} catch {
+  console.log('No .npmrc file found')
+}
