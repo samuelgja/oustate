@@ -1,5 +1,6 @@
 import type { IsEqual, State } from './types'
 import { useSyncExternalStore, toType } from './common'
+import { isPromise } from './is'
 
 /**
  * useCachedStateValue Hook.
@@ -9,11 +10,11 @@ import { useSyncExternalStore, toType } from './common'
  * @param isEqual - equality check function for selector
  * @returns StateValue from selector if provided, otherwise whole state
  */
-export const useStateValue = <T, S>(
+export function useStateValue<T, S>(
   state: State<T>,
   selector: (stateValue: T) => S = (stateValue) => toType<S>(stateValue),
   isEqual?: IsEqual<S>,
-): undefined extends S ? T : S => {
+): undefined extends S ? T : S {
   const data = useSyncExternalStore(
     state.__internal.emitter,
     (stateValue) => {
@@ -21,5 +22,8 @@ export const useStateValue = <T, S>(
     },
     isEqual,
   )
+  if (isPromise(data)) {
+    throw data
+  }
   return data
 }

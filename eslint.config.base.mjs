@@ -9,8 +9,7 @@ import jest from 'eslint-plugin-jest'
 import stylistic from '@stylistic/eslint-plugin'
 import sonarjs from 'eslint-plugin-sonarjs'
 import * as depend from 'eslint-plugin-depend'
-// import tsParser from '@typescript-eslint/parser'
-import importPlugin from 'eslint-plugin-import'
+
 import path from 'node:path'
 
 const tsConfigPath = path.resolve("./", 'tsconfig.json')
@@ -20,7 +19,7 @@ const tsConfigPath = path.resolve("./", 'tsconfig.json')
   depend.configs['flat/recommended'],
   {
     ignores: ['**/*.js', '**/api-definitions.ts', '**/.expo/**/*.ts*', "**/dist/**", "**/.storybook/**", "lib/**/*"],
-    files: ['packages/**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}'],
   },
   js.configs.recommended,
   // prettierRecommended,
@@ -37,7 +36,6 @@ const tsConfigPath = path.resolve("./", 'tsconfig.json')
       },
     },
     plugins: {
-      import: importPlugin,
       // prettier,
       jest,
       ts: tseslint,
