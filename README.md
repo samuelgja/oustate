@@ -25,7 +25,7 @@ import { state } from 'oustate'
 const useCounter = create(0)
 
 function Counter() {
-  const counter = useMyState()
+  const counter = useCounter()
   return <div onClick={() => useCounter.setState((prev) => prev + 1)}>{counter}</div>
 }
 ```
@@ -168,7 +168,16 @@ const user = userState.getState();
 ```
 ---
 
-## Contributing
+
+### Slicing new references
+:warning: Slicing data with new references can lead to maximum call stack exceeded error.
+It's recommended to not use new references for the state slices, if you need so, use `shallow` or other custom equality checks.
+```typescript
+import { state, shallow } from 'oustate';
+const userState = create({ name: 'John', age: 30 });
+// this slice will create new reference object on each call
+const useName = userState.select((user) => ({newUser: user.name }), shallow);
+```
 
 Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) before submitting a pull request.
 
