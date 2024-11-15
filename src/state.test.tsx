@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-shadow */
 import { Suspense } from 'react'
-import { state } from './state'
+import { create } from './create'
 import { renderHook, act, waitFor, render, screen } from '@testing-library/react'
 describe('state', () => {
   it('should test state', () => {
-    const appState = state({ count: 0 })
-    expect(appState.get()).toEqual({ count: 0 })
+    const appState = create({ count: 0 })
+    expect(appState.getState()).toEqual({ count: 0 })
   })
 
   it('should render state with promise hook', async () => {
     const promise = Promise.resolve({ count: 100 })
-    const appState = state(promise)
+    const appState = create(promise)
     const renderCount = { current: 0 }
     // const
 
@@ -24,13 +24,13 @@ describe('state', () => {
     expect(result.result.current).toEqual({ count: 100 })
     // count rendered
     expect(renderCount.current).toEqual(2)
-    expect(appState.get()).toEqual({ count: 100 })
+    expect(appState.getState()).toEqual({ count: 100 })
   })
 
   it('should render state with get promise hook', async () => {
     // eslint-disable-next-line unicorn/consistent-function-scoping
     const getPromise = () => Promise.resolve({ count: 100 })
-    const appState = state(getPromise)
+    const appState = create(getPromise)
     const renderCount = { current: 0 }
     // const
 
@@ -41,37 +41,37 @@ describe('state', () => {
     // wait for the promise to be resolved
     await waitFor(() => {})
     act(() => {
-      appState.set({ count: 15 })
+      appState.setState({ count: 15 })
     })
     expect(result.result.current).toEqual({ count: 15 })
     // count rendered
     expect(renderCount.current).toEqual(3)
-    expect(appState.get()).toEqual({ count: 15 })
+    expect(appState.getState()).toEqual({ count: 15 })
   })
 
   it('should render state with get promise check default', async () => {
     // eslint-disable-next-line unicorn/consistent-function-scoping
     const getPromise = () => Promise.resolve({ count: 100 })
-    const appState = state(getPromise)
+    const appState = create(getPromise)
     // const
 
     // wait for the promise to be resolved
     await waitFor(() => {})
     act(() => {
-      appState.set({ count: 15 })
+      appState.setState({ count: 15 })
     })
-    expect(appState.get()).toEqual({ count: 15 })
+    expect(appState.getState()).toEqual({ count: 15 })
     // count rendered
     act(() => {
       appState.reset()
     })
-    expect(appState.get()).toEqual({ count: 15 })
+    expect(appState.getState()).toEqual({ count: 15 })
   })
 
   it('should render state with get hook', async () => {
     // eslint-disable-next-line unicorn/consistent-function-scoping
     const get = () => ({ count: 100 })
-    const appState = state(get)
+    const appState = create(get)
     const renderCount = { current: 0 }
     // const
 
@@ -82,12 +82,12 @@ describe('state', () => {
     // wait for the promise to be resolved
     await waitFor(() => {})
     act(() => {
-      appState.set({ count: 15 })
+      appState.setState({ count: 15 })
     })
     expect(result.result.current).toEqual({ count: 15 })
     // count rendered
     expect(renderCount.current).toEqual(2)
-    expect(appState.get()).toEqual({ count: 15 })
+    expect(appState.getState()).toEqual({ count: 15 })
 
     act(() => {
       appState.reset()
@@ -101,9 +101,9 @@ describe('state', () => {
       wasCalled = true
       return { count: 100 }
     }
-    const appState = state(get)
+    const appState = create(get)
     expect(wasCalled).toEqual(false)
-    appState.get()
+    appState.getState()
     expect(wasCalled).toEqual(true)
   })
   it('should render state with get hook', async () => {
@@ -112,7 +112,7 @@ describe('state', () => {
       wasCalled = true
       return { count: 100 }
     }
-    const appState = state(get)
+    const appState = create(get)
     expect(wasCalled).toEqual(false)
     renderHook(() => {
       appState()
@@ -122,7 +122,7 @@ describe('state', () => {
 
   it('should render state with promise with suspense', async () => {
     const promise = Promise.resolve({ count: 100 })
-    const appState = state(promise)
+    const appState = create(promise)
     const renderCount = { current: 0 }
 
     const MockedComponent = jest.fn(() => <div>loading</div>)
@@ -152,7 +152,7 @@ describe('state', () => {
   })
 
   it('should render state', () => {
-    const appState = state({ count: 0 })
+    const appState = create({ count: 0 })
     const renderCount = { current: 0 }
     // const
 
@@ -166,7 +166,7 @@ describe('state', () => {
   })
 
   it('should render state', () => {
-    const appState = state({ count: 0 })
+    const appState = create({ count: 0 })
     const slice = appState.select((slice) => slice.count)
     const renderCount = { current: 0 }
     // const
@@ -181,7 +181,7 @@ describe('state', () => {
   })
 
   it('should render state with change', () => {
-    const appState = state({ count: 0 })
+    const appState = create({ count: 0 })
     const renderCount = { current: 0 }
     // const
 
@@ -191,14 +191,14 @@ describe('state', () => {
     })
 
     act(() => {
-      appState.set({ count: 1 })
+      appState.setState({ count: 1 })
     })
     expect(result.result.current).toEqual({ count: 1 })
     expect(renderCount.current).toEqual(2)
   })
 
   it('should render state with slice change', () => {
-    const appState = state({ count: { nested: 0, array: [0] } })
+    const appState = create({ count: { nested: 0, array: [0] } })
     const renderCount = { current: 0 }
     const useNestedSlice = appState.select((slice) => slice.count)
     const useNestedSliceArray = appState.select((slice) => slice.count.array.length)
@@ -215,20 +215,20 @@ describe('state', () => {
     expect(sliceArrayResult.result.current).toEqual(1)
     expect(sliceResult.result.current).toEqual({ nested: 0, array: [0] })
     act(() => {
-      appState.set({ count: { nested: 2, array: [0] } })
+      appState.setState({ count: { nested: 2, array: [0] } })
     })
 
     expect(result.result.current).toEqual({ count: { nested: 2, array: [0] } })
     expect(sliceResult.result.current).toEqual({ nested: 2, array: [0] })
 
     act(() => {
-      appState.set({ count: { nested: 2, array: [1, 2, 4] } })
+      appState.setState({ count: { nested: 2, array: [1, 2, 4] } })
     })
     expect(sliceArrayResult.result.current).toEqual(3)
   })
 
   it('should render multiple state', () => {
-    const mainState = state({ count: { nestedCount: 2 } })
+    const mainState = create({ count: { nestedCount: 2 } })
     const slice1 = mainState.select((slice) => slice.count)
     const slice2FromSlice1 = slice1.select((slice) => slice.nestedCount)
 
@@ -236,13 +236,13 @@ describe('state', () => {
     expect(slice2FromSlice1Result.result.current).toEqual(2)
 
     act(() => {
-      mainState.set({ count: { nestedCount: 3 } })
+      mainState.setState({ count: { nestedCount: 3 } })
     })
     expect(slice2FromSlice1Result.result.current).toEqual(3)
   })
 
   it('should render multiple state with change', () => {
-    const appState = state({ count: 0 })
+    const appState = create({ count: 0 })
     const renderCount1 = { current: 0 }
     const renderCount2 = { current: 0 }
     // const
@@ -256,7 +256,7 @@ describe('state', () => {
       return appState((slice) => slice.count)
     })
     act(() => {
-      appState.set({ count: 1 })
+      appState.setState({ count: 1 })
     })
     expect(result1.result.current).toEqual({ count: 1 })
     expect(result2.result.current).toEqual(1)
@@ -265,12 +265,12 @@ describe('state', () => {
   })
 
   it('should test initial state', () => {
-    const appState = state({ count: 0 })
-    expect(appState.get()).toEqual({ count: 0 })
+    const appState = create({ count: 0 })
+    expect(appState.getState()).toEqual({ count: 0 })
   })
 
   it('should render initial state', () => {
-    const appState = state({ count: 0 })
+    const appState = create({ count: 0 })
     const renderCount = { current: 0 }
 
     const result = renderHook(() => {
@@ -282,7 +282,7 @@ describe('state', () => {
   })
 
   it('should render state after change', () => {
-    const appState = state({ count: 0 })
+    const appState = create({ count: 0 })
     const renderCount = { current: 0 }
 
     const result = renderHook(() => {
@@ -291,14 +291,14 @@ describe('state', () => {
     })
 
     act(() => {
-      appState.set({ count: 1 })
+      appState.setState({ count: 1 })
     })
     expect(result.result.current).toEqual({ count: 1 })
     expect(renderCount.current).toEqual(2)
   })
 
   it('should render state with nested slice change', () => {
-    const appState = state({ count: { nested: 0, array: [0] } })
+    const appState = create({ count: { nested: 0, array: [0] } })
     const renderCount = { current: 0 }
     const useNestedSlice = appState.select((slice) => slice.count)
     const useNestedSliceArray = appState.select((slice) => slice.count.array.length)
@@ -314,19 +314,19 @@ describe('state', () => {
     expect(sliceResult.result.current).toEqual({ nested: 0, array: [0] })
 
     act(() => {
-      appState.set({ count: { nested: 2, array: [0] } })
+      appState.setState({ count: { nested: 2, array: [0] } })
     })
     expect(result.result.current).toEqual({ count: { nested: 2, array: [0] } })
     expect(sliceResult.result.current).toEqual({ nested: 2, array: [0] })
 
     act(() => {
-      appState.set({ count: { nested: 2, array: [1, 2, 4] } })
+      appState.setState({ count: { nested: 2, array: [1, 2, 4] } })
     })
     expect(sliceArrayResult.result.current).toEqual(3)
   })
 
   it('should render multiple state slices with updates', () => {
-    const mainState = state({ count: { nestedCount: 2 } })
+    const mainState = create({ count: { nestedCount: 2 } })
     const slice1 = mainState.select((slice) => slice.count)
     const slice2FromSlice1 = slice1.select((slice) => slice.nestedCount)
 
@@ -334,13 +334,13 @@ describe('state', () => {
     expect(slice2FromSlice1Result.result.current).toEqual(2)
 
     act(() => {
-      mainState.set({ count: { nestedCount: 3 } })
+      mainState.setState({ count: { nestedCount: 3 } })
     })
     expect(slice2FromSlice1Result.result.current).toEqual(3)
   })
 
   it('should render multiple components observing the same state', () => {
-    const appState = state({ count: 0 })
+    const appState = create({ count: 0 })
     const renderCount1 = { current: 0 }
     const renderCount2 = { current: 0 }
 
@@ -354,7 +354,7 @@ describe('state', () => {
     })
 
     act(() => {
-      appState.set({ count: 1 })
+      appState.setState({ count: 1 })
     })
     expect(result1.result.current).toEqual({ count: 1 })
     expect(result2.result.current).toEqual(1)
@@ -363,33 +363,33 @@ describe('state', () => {
   })
 
   it('should reset state to default value', () => {
-    const appState = state({ count: 0 })
+    const appState = create({ count: 0 })
     act(() => {
-      appState.set({ count: 10 })
+      appState.setState({ count: 10 })
     })
-    expect(appState.get()).toEqual({ count: 10 })
+    expect(appState.getState()).toEqual({ count: 10 })
 
     act(() => {
       appState.reset()
     })
-    expect(appState.get()).toEqual({ count: 0 })
+    expect(appState.getState()).toEqual({ count: 0 })
   })
 
   it('should handle updates with deep nesting in state', () => {
-    const appState = state({ data: { nested: { value: 1 } } })
+    const appState = create({ data: { nested: { value: 1 } } })
     const nestedSlice = appState.select((s) => s.data.nested.value)
 
     const result = renderHook(() => nestedSlice())
     expect(result.result.current).toEqual(1)
 
     act(() => {
-      appState.set({ data: { nested: { value: 2 } } })
+      appState.setState({ data: { nested: { value: 2 } } })
     })
     expect(result.result.current).toEqual(2)
   })
 
   it('should not re-render for unrelated slice changes', () => {
-    const appState = state({ count: 0, unrelated: 5 })
+    const appState = create({ count: 0, unrelated: 5 })
     const renderCount = { current: 0 }
 
     const countSlice = appState.select((state) => state.count)
@@ -404,10 +404,120 @@ describe('state', () => {
     expect(renderCount.current).toEqual(1)
 
     act(() => {
-      return appState.set({ unrelated: 10 } as never)
+      return appState.setState({ unrelated: 10 } as never)
     })
 
     expect(unrelatedResult.result.current).toEqual(10)
     expect(renderCount.current).toEqual(2) // No re-render for count slice
+  })
+
+  it('should not re-render where isEqual return true on state', () => {
+    const appState = create({ count: 0 }, { isEqual: () => true })
+    const renderCount = { current: 0 }
+
+    renderHook(() => {
+      renderCount.current++
+      return appState()
+    })
+
+    act(() => {
+      appState.setState({ count: 10 })
+    })
+
+    expect(renderCount.current).toEqual(1)
+  })
+
+  it('should not re-render where isEqual return true hook slice', () => {
+    const appState = create({ count: 0 })
+    const renderCount = { current: 0 }
+
+    renderHook(() => {
+      renderCount.current++
+      return appState(
+        (slice) => slice,
+        () => true,
+      )
+    })
+
+    act(() => {
+      appState.setState({ count: 10 })
+    })
+
+    expect(renderCount.current).toEqual(1)
+  })
+
+  it('should not re-render where isEqual return true on slice', () => {
+    const appState = create({ count: 0 })
+    const appStateSlice = appState.select(
+      (slice) => slice.count,
+      () => true,
+    )
+    const renderCount = { current: 0 }
+
+    renderHook(() => {
+      renderCount.current++
+      return appStateSlice()
+    })
+
+    act(() => {
+      appState.setState({ count: 10 })
+    })
+    expect(renderCount.current).toEqual(1)
+  })
+
+  it('should not re-render where isEqual return true on nested slice', () => {
+    const appState = create({ count: { nested: { count: 0 } } })
+    const appStateSlice = appState.select((slice) => slice.count)
+    const nestedAppSlice = appStateSlice.select(
+      (slice) => slice.nested.count,
+      () => true,
+    )
+    const renderCount = { current: 0 }
+
+    renderHook(() => {
+      renderCount.current++
+      return nestedAppSlice()
+    })
+
+    act(() => {
+      appState.setState({ count: { nested: { count: 10 } } })
+    })
+    expect(renderCount.current).toEqual(1)
+  })
+  it('should use merge states', () => {
+    const state1 = create(3)
+    const state2 = create(2)
+    const mergedState = state1.merge(state2, (s1, s2) => s1 + s2)
+    const result = renderHook(() => mergedState())
+    expect(result.result.current).toEqual(5)
+    act(() => {
+      state1.setState(5)
+    })
+    expect(result.result.current).toEqual(7)
+    act(() => {
+      state2.setState(3)
+    })
+    expect(result.result.current).toEqual(8)
+  })
+
+  it('should use merge states nested', () => {
+    // const useName = create(() => 'John')
+    // const useAge = create(() => 30)
+    // const useUser = useName.merge(useAge, (name, age) => ({ name, age }))
+    // const result = renderHook(() => useUser())
+    // expect(result.result.current).toEqual({ name: 'John', age: 30 })
+  })
+
+  it('should use slice with new reference', () => {
+    const useName = create(() => 'John')
+    const useDifferentName = useName.select((name) => ({
+      name,
+    }))
+    const result = renderHook(() => useDifferentName())
+    expect(result.result.current).toEqual({ name: 'John' })
+    act(() => {
+      useName.setState('Jane')
+    })
+    expect(result.result.current).toEqual({ name: 'Jane' })
   })
 })

@@ -12,42 +12,126 @@
 ```bash
 bun add oustate
 # or
-npm install oustate
-# or
 yarn add oustate
+# or
+npm install oustate
 ```
 
 ## Quick Start
 
 ```typescript
-import { state } from 'oustate';
+import { state } from 'oustate'
 
-const counterState = state(0);
+const useCounter = create(0)
 
 function Counter() {
-  const counter = counterState();
+  const counter = useMyState()
+  return <div onClick={() => useCounter.setState((prev) => prev + 1)}>{counter}</div>
+}
+```
+
+### Selecting parts of the state globally
+```tsx
+import { state } from 'oustate'
+
+const useUser = create({ name: 'John', age: 30 })
+
+const useName = useUser.select((user) => user.name)
+const useAge = useUser.select((user) => user.age)
+
+function Counter() {
+  const name = useName()
+  return <div onClick={() => useUser.setState((prev) => ({ ...prev, name: 'Jane' }))}>{counter}</div>
+}
+```
+
+### Or lazy
+```typescript
+import { state } from 'oustate';
+// getter function, it'a lazy state initialization, loaded only when it's accessed
+const useCounter = create(() => 0); 
+
+function Counter() {
+  const counter = useCounter();
   return (
-    <div onClick={() => counterState.set((prev) => prev + 1)}>
+    <div onClick={() => useCounter.setState((prev) => prev + 1)}>
       {counter}
     </div>
   );
 }
 ```
 
+
+### Or merge two states
+```typescript
+import { state } from 'oustate';
+// getter function, it'a lazy state initialization, loaded only when it's accessed
+const useName = create(() => 'John');
+const useAge = create(() => 30);
+
+const useUser = useName.merge(useAge, (name, age) => ({ name, age }));
+
+function Counter() {
+  const {name, age} = useUser();
+  return (
+    <div onClick={() => useName.setState((prev) => 'Jane')}>
+      {counter}
+    </div>
+  );
+}
+```
+
+
+### Promise based state and lifecycle management working with React Suspense
+This methods are useful for handling async data fetching and lazy loading via React Suspense.
+
+#### Immediate Promise resolution
+```typescript
+import { state } from 'oustate';
+ // state will try to resolve the promise immediately, can hit the suspense boundary
+const counterState = create(Promise.resolve(0));
+
+function Counter() {
+  const counter = counterState();
+  return (
+    <div onClick={() => counterState.setState((prev) => prev + 1)}>
+      {counter}
+    </div>
+  );
+}
+```
+
+#### Lazy Promise resolution
+```typescript
+import { state } from 'oustate';
+// state will lazy resolve the promise on first access, this will hit the suspense boundary if the first access is from component and via `counterState.getState()` method
+const counterState = create(() => Promise.resolve(0)); 
+
+function Counter() {
+  const counter = counterState();
+  return (
+    <div onClick={() => counterState.setState((prev) => prev + 1)}>
+      {counter}
+    </div>
+  );
+}
+```
+
+
 ## API Reference
 
-### `state`
+### `create`
 
 Creates a basic atom state.
 
 ```typescript
-function state<T>(defaultState: T, options?: StateOptions<T>): StateSetter<T>;
+function create<T>(defaultState: T, options?: StateOptions<T>): StateSetter<T>;
 ```
 
 **Example:**
 
 ```typescript
-const userState = state({ name: 'John', age: 30 });
+const userState = create({ name: 'John', age: 30 });
 ```
 
 ### `select`
@@ -56,11 +140,11 @@ Selects a slice of an existing state directly or via a selector function.
 
 ```typescript
 // userState is ready to use as hook, so you can name it with `use` prefix
-const userState = state({ name: 'John', age: 30 });
-// Direct selection
+const userState = create({ name: 'John', age: 30 });
+// Direct selection outside the component, is useful for accessing the slices of the state in multiple components
 const userAgeState = userState.select((user) => user.age);
 
-// Selection via selector function
+// Selection via selector in hook function
 const userNameState = select(userState, (user) => user.name);
 ```
 
@@ -75,6 +159,13 @@ const userAgeState = select(userState, (user) => user.age);
 ```
 
 
+
+### Access from outside the component
+:warning: Avoid using this method for state management in [React Server Components](https://github.com/reactjs/rfcs/blob/main/text/0188-server-components.md), especially in Next.js 13+. It may cause unexpected behavior or privacy concerns.
+```typescript
+const userState = create({ name: 'John', age: 30 });
+const user = userState.getState();
+```
 ---
 
 ## Contributing
