@@ -20,7 +20,7 @@ npm install oustate
 ## Quick Start
 
 ```typescript
-import { state } from 'oustate'
+import { create } from 'oustate'
 
 const useCounter = create(0)
 
@@ -32,7 +32,7 @@ function Counter() {
 
 ### Selecting parts of the state globally
 ```tsx
-import { state } from 'oustate'
+import { create } from 'oustate'
 
 const useUser = create({ name: 'John', age: 30 })
 
@@ -47,7 +47,7 @@ function Counter() {
 
 ### Or lazy
 ```typescript
-import { state } from 'oustate';
+import { create } from 'oustate';
 // getter function, it'a lazy state initialization, loaded only when it's accessed
 const useCounter = create(() => 0); 
 
@@ -64,7 +64,7 @@ function Counter() {
 
 ### Or merge two states
 ```typescript
-import { state } from 'oustate';
+import { create } from 'oustate';
 // getter function, it'a lazy state initialization, loaded only when it's accessed
 const useName = create(() => 'John');
 const useAge = create(() => 30);
@@ -87,7 +87,7 @@ This methods are useful for handling async data fetching and lazy loading via Re
 
 #### Immediate Promise resolution
 ```typescript
-import { state } from 'oustate';
+import { create } from 'oustate';
  // state will try to resolve the promise immediately, can hit the suspense boundary
 const counterState = create(Promise.resolve(0));
 
@@ -103,7 +103,7 @@ function Counter() {
 
 #### Lazy Promise resolution
 ```typescript
-import { state } from 'oustate';
+import { create } from 'oustate';
 // state will lazy resolve the promise on first access, this will hit the suspense boundary if the first access is from component and via `counterState.getState()` method
 const counterState = create(() => Promise.resolve(0)); 
 
