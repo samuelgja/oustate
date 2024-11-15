@@ -1,5 +1,6 @@
 import type { IsEqual, State } from './types'
-import { useSyncExternalStore, toType, isPromise } from './common'
+import { useSyncExternalStore, toType } from './common'
+import { isPromise } from './is'
 
 /**
  * useCachedStateValue Hook.

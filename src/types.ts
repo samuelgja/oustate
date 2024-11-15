@@ -1,6 +1,5 @@
-import { RefObject } from 'react'
-import { isFunction, isPromise } from './common'
 import type { Emitter } from './create-emitter'
+import { isFunction, isPromise } from './is'
 
 /**
  * Key identifier for family state.
@@ -16,15 +15,11 @@ export interface StateOptions<T> {
   onSet?: (newValue: T) => void
 }
 
-type Setter<T> = (value: T) => T
+export type Setter<T> = (value: T) => T
 /**
  * Set new state value function.
  */
 export type SetValue<T> = T | Setter<T>
-
-export function isSetValueFunction<T>(value: SetValue<T>): value is Setter<T> {
-  return typeof value === 'function'
-}
 
 /**
  * Set new state function
@@ -70,7 +65,7 @@ export interface StateBase<T> {
    */
   id: Key
 
-  select: <S>(selector: (value: RefObject<T>) => S, isEqual?: IsEqual<S>) => StateGetter<S>
+  select: <S>(selector: (value: T) => S, isEqual?: IsEqual<S>) => StateGetter<S>
   merge: <T2, S>(state2: StateGetter<T2>, selector: (value1: T, value2: T2) => S, isEqual?: IsEqual<S>) => StateGetter<S>
 
   /**
@@ -104,4 +99,9 @@ export function getDefaultValue<T>(initValue: DefaultValue<T>): T {
     return (initValue as () => T)()
   }
   return initValue
+}
+
+export interface Ref<T> {
+  current: T | undefined
+  readonly isRef: true
 }

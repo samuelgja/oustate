@@ -32,12 +32,3 @@ export function getId() {
   id++
   return `${id}:ID`
 }
-
-export function isPromise(value: unknown): value is Promise<unknown> {
-  return value instanceof Promise
-}
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isFunction(value: unknown): value is Function {
-  return typeof value === 'function'
-}

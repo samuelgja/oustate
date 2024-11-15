@@ -3,6 +3,7 @@
 import { Suspense } from 'react'
 import { create } from './create'
 import { renderHook, act, waitFor, render, screen } from '@testing-library/react'
+import { shallow } from './shallow'
 describe('state', () => {
   it('should test state', () => {
     const appState = create({ count: 0 })
@@ -501,18 +502,26 @@ describe('state', () => {
   })
 
   it('should use merge states nested', () => {
-    // const useName = create(() => 'John')
-    // const useAge = create(() => 30)
-    // const useUser = useName.merge(useAge, (name, age) => ({ name, age }))
-    // const result = renderHook(() => useUser())
-    // expect(result.result.current).toEqual({ name: 'John', age: 30 })
+    const useName = create(() => 'John')
+    const useAge = create(() => 30)
+    const useUser = useName.merge(useAge, (name, age) => ({ name, age }), shallow)
+    const result = renderHook(() => useUser())
+    expect(result.result.current).toEqual({ name: 'John', age: 30 })
+
+    act(() => {
+      useName.setState('Jane')
+    })
+    expect(result.result.current).toEqual({ name: 'Jane', age: 30 })
   })
 
   it('should use slice with new reference', () => {
     const useName = create(() => 'John')
-    const useDifferentName = useName.select((name) => ({
-      name,
-    }))
+    const useDifferentName = useName.select(
+      (name) => ({
+        name,
+      }),
+      shallow,
+    )
     const result = renderHook(() => useDifferentName())
     expect(result.result.current).toEqual({ name: 'John' })
     act(() => {

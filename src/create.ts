@@ -1,10 +1,11 @@
 import { createEmitter } from './create-emitter'
 import type { SetValue, StateOptions, StateSetter, StateDataInternal, IsEqual, StateBase, DefaultValue } from './types'
-import { getDefaultValue, isSetValueFunction, StateKeys } from './types'
-import { getId, isPromise } from './common'
+import { getDefaultValue, StateKeys } from './types'
+import { getId } from './common'
 import { useStateValue } from './use-state-value'
 import { select } from './select'
 import { merge } from './merge'
+import { isPromise, isSetValueFunction } from './is'
 
 /**
  * Creates a basic atom state.
@@ -92,10 +93,10 @@ export function create<T>(defaultValue: DefaultValue<T>, options?: StateOptions<
       set(value)
     },
     select(selector, isSame) {
-      return select(stateValue, selector, isSame)
+      return select(useSliceState, selector, isSame)
     },
     merge(state2, selector, isEqualHook) {
-      return merge(stateValue, state2, selector, isEqualHook)
+      return merge(useSliceState, state2, selector, isEqualHook)
     },
 
     __internal: {
@@ -104,18 +105,18 @@ export function create<T>(defaultValue: DefaultValue<T>, options?: StateOptions<
   }
 
   // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
-  const stateValue: StateSetter<T> = <S>(selector?: (state: T) => S, isEqual?: IsEqual<S>) => {
-    return useStateValue(stateValue, selector, isEqual)
+  const useSliceState: StateSetter<T> = <S>(selector?: (state: T) => S, isEqual?: IsEqual<S>) => {
+    return useStateValue(useSliceState, selector, isEqual)
   }
-  stateValue.setState = set
-  stateValue.__internal = stateBase.__internal
-  stateValue.__tag = stateBase.__tag
-  stateValue.is = stateBase.is
-  stateValue.id = stateBase.id
-  stateValue.getState = stateBase.getState
-  stateValue.reset = stateBase.reset
-  stateValue.select = stateBase.select
-  stateValue.merge = stateBase.merge
+  useSliceState.setState = set
+  useSliceState.__internal = stateBase.__internal
+  useSliceState.__tag = stateBase.__tag
+  useSliceState.is = stateBase.is
+  useSliceState.id = stateBase.id
+  useSliceState.getState = stateBase.getState
+  useSliceState.reset = stateBase.reset
+  useSliceState.select = stateBase.select
+  useSliceState.merge = stateBase.merge
 
-  return stateValue as StateSetter<Awaited<T>>
+  return useSliceState as StateSetter<Awaited<T>>
 }
